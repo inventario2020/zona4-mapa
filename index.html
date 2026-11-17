@@ -767,8 +767,9 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <button id="zfit">Ver todo</button>
  <button id="bHelp">Instrucciones</button>
  <span class="sep"></span>
- <button id="bGps">Mi ubicación</button>
+ <button id="bGps">Activar GPS</button>
  <button id="bFollow" style="display:none">Siguiendo</button>
+ <button id="bWake">Pantalla siempre activa: OFF</button>
  <span id="searchWrap"><input id="q" type="search" placeholder="Buscar carretera o población (CC-432, Trujillo, Navezuelas…)" autocomplete="off"><div id="suggest"></div></span>
 </div>
 <div id="main">
@@ -1023,6 +1024,41 @@ $('bCoord').onclick=()=>{
  if(coordOn){if(lastLL)showCoords(lastLL);}else{$('coordInfo').style.display='none';}
 };
 map.on('click',e=>{$('suggest').style.display='none'; if(coordOn) showCoords(e.latlng);});
+/* --- pantalla siempre activa --- */
+let wakeLock=null, wakeOn=false;
+const bWake=$('bWake');
+function wakeText(on){
+ bWake.textContent='Pantalla siempre activa: '+(on?'ON':'OFF');
+ bWake.classList.toggle('on',on);
+}
+async function getWake(){
+ if(!('wakeLock' in navigator))return false;
+ try{ wakeLock=await navigator.wakeLock.request('screen'); }
+ catch(e){ wakeLock=null; return false; }
+ wakeLock.addEventListener('release',()=>{
+  wakeLock=null;
+  if(wakeOn&&document.visibilityState==='visible')getWake();
+ });
+ return true;
+}
+bWake.onclick=async()=>{
+ if(wakeOn){
+  wakeOn=false; wakeText(false);
+  if(wakeLock){try{await wakeLock.release();}catch(e){} wakeLock=null;}
+  return;
+ }
+ if(!('wakeLock' in navigator)){
+  bWake.textContent='Pantalla activa: no disponible';
+  bWake.title='Este navegador no permite mantener la pantalla encendida. En iPhone/iPad desactiva el bloqueo automático en Ajustes › Pantalla y brillo.';
+  return;
+ }
+ const ok=await getWake();
+ if(ok){wakeOn=true;wakeText(true);}
+ else{bWake.textContent='Pantalla activa: no disponible';}
+};
+document.addEventListener('visibilitychange',()=>{
+ if(wakeOn&&document.visibilityState==='visible'&&!wakeLock)getWake();
+});
 /* --- medicion de distancias --- */
 map.createPane('measurePane');
 map.getPane('measurePane').style.zIndex=450;
@@ -1088,7 +1124,7 @@ function onErr(e){
 }
 function stopGps(){
  if(watchId!=null)navigator.geolocation.clearWatch(watchId);
- watchId=null; bGps.classList.remove('on'); bGps.textContent='Mi ubicación';
+ watchId=null; bGps.classList.remove('on'); bGps.textContent='Activar GPS';
  bFollow.style.display='none'; following=true;
  if(me){map.removeLayer(me);map.removeLayer(circle);me=null;circle=null;}
  gps.style.display='none';
@@ -1098,7 +1134,7 @@ bGps.onclick=()=>{
  if(!navigator.geolocation){gpsText('Este navegador no permite geolocalización.');return;}
  gpsText('Buscando señal GPS…');
  watchId=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
- bGps.classList.add('on'); bGps.textContent='Detener GPS';
+ bGps.classList.add('on'); bGps.textContent='Desactivar GPS';
  bFollow.style.display=''; bFollow.classList.add('on'); following=true;
 };
 bFollow.onclick=()=>{following=!following;bFollow.classList.toggle('on',following);bFollow.textContent=following?'Siguiendo':'Seguir';};
