@@ -709,6 +709,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
 .leaflet-control-attribution a{color:#0d9488!important}
 #status{position:absolute;left:10px;bottom:10px;z-index:500;background:#ffffffee;border:1px solid #e2e8f0;border-radius:8px;padding:6px 9px;font-size:11px;line-height:1.6;box-shadow:0 2px 8px #0001}
 #gpsInfo{position:absolute;right:10px;bottom:10px;z-index:500;background:#ffffffee;border:1px solid #bfdbfe;border-radius:8px;padding:6px 9px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px #0001;display:none}
+#wakeInfo{position:absolute;right:10px;bottom:100px;z-index:501;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:6px 9px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px #0002;display:none;max-width:min(300px,70vw);cursor:pointer}
 #coordInfo{position:absolute;right:10px;bottom:54px;z-index:500;background:#ffffffee;border:1px solid #94a3b8;border-radius:8px;padding:7px 9px;font-size:11px;line-height:1.5;box-shadow:0 2px 8px #0001;display:none;min-width:215px}
 #coordInfo b{color:#0f172a}
 #coordInfo .grid{display:grid;grid-template-columns:auto 1fr;gap:1px 8px;margin-top:3px;font-variant-numeric:tabular-nums}
@@ -787,6 +788,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <div><span class="lbl">Vía:</span> <span id="lrsRoad"></span></div>
  <div><span class="lbl">PK:</span> <span id="lrsPk" class="pk"></span></div>
 </div><div id="gpsInfo"></div>
+ <div id="wakeInfo"></div>
  <div id="measureInfo"><b>Medición</b><div id="measureText"></div><button id="mEnd">Terminar</button> <button id="mClear">Borrar</button></div>
  <div id="helpPanel">
   <button class="close" id="bHelpClose" aria-label="Cerrar">×</button>
@@ -1027,7 +1029,13 @@ map.on('click',e=>{$('suggest').style.display='none'; if(coordOn) showCoords(e.l
 /* --- pantalla siempre activa --- */
 let wakeLock=null, wakeOn=false;
 const bWake=$('bWake');
+function wakeMsg(t){
+ const e=$('wakeInfo'); e.innerHTML=t; e.style.display='block';
+ clearTimeout(wakeMsg._t); wakeMsg._t=setTimeout(()=>{e.style.display='none';},12000);
+}
+$('wakeInfo').onclick=()=>{$('wakeInfo').style.display='none';};
 function wakeText(on){
+ $('wakeInfo').style.display='none';
  bWake.textContent='Pantalla siempre activa: '+(on?'ON':'OFF');
  bWake.classList.toggle('on',on);
 }
@@ -1049,12 +1057,12 @@ bWake.onclick=async()=>{
  }
  if(!('wakeLock' in navigator)){
   bWake.textContent='Pantalla activa: no disponible';
-  bWake.title='Este navegador no permite mantener la pantalla encendida. En iPhone/iPad desactiva el bloqueo automático en Ajustes › Pantalla y brillo.';
+  wakeMsg('Este navegador no permite mantener la pantalla encendida.<br>En iPhone/iPad: Ajustes › Pantalla y brillo › Bloqueo automático › Nunca.');
   return;
  }
  const ok=await getWake();
  if(ok){wakeOn=true;wakeText(true);}
- else{bWake.textContent='Pantalla activa: no disponible';}
+ else{bWake.textContent='Pantalla activa: no disponible';wakeMsg('No se pudo mantener la pantalla encendida.<br>En iPhone/iPad: Ajustes › Pantalla y brillo › Bloqueo automático › Nunca.');}
 };
 document.addEventListener('visibilitychange',()=>{
  if(wakeOn&&document.visibilityState==='visible'&&!wakeLock)getWake();
