@@ -1018,14 +1018,25 @@ $('cCopy').onclick=()=>{
  const txt='WGS84: '+lastLL.lat.toFixed(6)+', '+lastLL.lng.toFixed(6)+'\nETRS89 UTM '+z+'N: E '+uv[0].toFixed(2)+' N '+uv[1].toFixed(2);
  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).catch(()=>{});
 };
-$('cClose').onclick=()=>{$('coordInfo').style.display='none';};
-let coordOn=true;
+$('cClose').onclick=()=>{coordClosed=true;$('coordInfo').style.display='none';};
+let coordOn=true, coordClosed=false;
 $('bCoord').onclick=()=>{
- coordOn=!coordOn;
+ coordOn=!coordOn; coordClosed=false;
  $('bCoord').classList.toggle('on',coordOn);
  if(coordOn){if(lastLL)showCoords(lastLL);}else{$('coordInfo').style.display='none';}
 };
-map.on('click',e=>{$('suggest').style.display='none'; if(coordOn) showCoords(e.latlng);});
+map.on('click',e=>{
+ $('suggest').style.display='none';
+ if(coordOn){coordClosed=false;showCoords(e.latlng);}
+});
+let coordMoveAt=0;
+map.on('mousemove',e=>{
+ if(!coordOn||coordClosed||measuring)return;
+ const now=Date.now(); if(now-coordMoveAt<40)return; coordMoveAt=now;
+ showCoords(e.latlng);
+});
+map.on('drag',()=>{if(!coordOn||coordClosed||measuring)return;showCoords(map.getCenter());});
+
 /* --- pantalla siempre activa --- */
 let wakeLock=null, wakeOn=false;
 const bWake=$('bWake');
