@@ -1209,16 +1209,6 @@ function updateLRS(ll,gpsAcc,fromGps){
  lrsLast=e; lrsLastLL=ll;
 }
 map.on('click',e=>{lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);});
-let lrsMapAt=0;
-function updateLRSDesdeMapa(){
- if(!refOn)return;
- const now=Date.now();
- if(now-lrsMapAt<80)return;
- lrsMapAt=now; lrsManualUntil=now+20000;
- updateLRS(map.getCenter());
-}
-map.on('drag',updateLRSDesdeMapa);
-map.on('zoomend',updateLRSDesdeMapa);
 
 $('bRef').onclick=()=>{
  refOn=!refOn;
