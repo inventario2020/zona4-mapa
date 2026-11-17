@@ -1,0 +1,102 @@
+# Carreteras de Zona 4 Trujillo (Sur-Este) — GitHub Pages
+
+Esta carpeta contiene el visor listo para publicar:
+
+- `index.html` — el mapa completo (carreteras, PK, fondos del IGN y GPS).
+- `.nojekyll` — evita que GitHub procese los archivos con Jekyll.
+
+GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
+
+El propio mapa lleva un botón **Instrucciones** en la barra superior con este resumen (PC, GitHub e iPhone).
+
+---
+
+## Publicar en 5 pasos
+
+1. **Crea cuenta** en https://github.com/signup (si no tienes).
+
+2. **Crea el repositorio**:
+   - Pulsa el botón verde **New**.
+   - Repository name: `zona4-mapa` (o el nombre que quieras, en minúsculas y sin espacios).
+   - Marca **Public** (los repositorios privados no tienen Pages gratis).
+   - Opcionalmente marca **Add a README file**.
+   - Pulsa **Create repository**.
+
+3. **Sube los archivos**:
+   - Dentro del repositorio, pulsa **Add file → Upload files**.
+   - Arrastra los 3 archivos: `index.html`, `README.md` y `.nojekyll`.
+   - Escribe un mensaje (p. ej. `Publicar mapa Zona 4`) y pulsa **Commit changes**.
+
+4. **Activa Pages**:
+   - Ve a **Settings → Pages** (en la pestaña del repositorio).
+   - En *Build and deployment*, Source elige **Deploy from a branch**.
+   - Branch: **`main`** y carpeta **`/ (root)`**.
+   - Pulsa **Save**.
+
+5. **Abre la URL** (espera 1–2 minutos la primera vez):
+
+   ```
+   https://TU-USUARIO.github.io/zona4-mapa/
+   ```
+
+   Sustituye `TU-USUARIO` por tu nombre de usuario de GitHub y `zona4-mapa` por el nombre del repositorio. **El slash final importa.**
+
+---
+
+## Usarlo en el iPhone
+
+1. Abre **Safari** y pega la URL `https://...` (nunca `http://`).
+2. Pulsa **Mi ubicación** y acepta **Permitir** cuando Safari pregunte por la ubicación.
+3. Para tenerlo como app: botón **Compartir → Añadir a la pantalla de inicio**. Así se abre siempre en HTTPS y el GPS sigue funcionando.
+
+Si no sale el permiso:
+- Ajustes → **Privacidad y seguridad → Servicios de ubicación** → activar **Servicios de ubicación** y, dentro de **Safari**, marcar **Precisa**.
+- Comprueba que la URL empiece por `https://`.
+
+---
+
+## Usarlo en Android
+
+1. Abre **Chrome** y pega la misma URL `https://...` (nunca `http://`).
+2. Pulsa **Mi ubicación** y acepta **Permitir**.
+3. Para instalarlo: menú de Chrome (**⋮**) → **Añadir a pantalla de inicio** o **Instalar app**. Se abre como una app y siempre usa HTTPS.
+4. Si no sale el permiso:
+   - Activa la ubicación del móvil en **Ajustes → Ubicación**.
+   - **Ajustes → Apps → Chrome → Permisos → Ubicación** → **Solo mientras usas la app** o **Preguntar cada vez**.
+
+Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages; abriendo el HTML desde Archivos no hay ubicación.
+
+---
+
+## Controles del mapa
+
+| Control | Función |
+|---|---|
+| Topográfico / Mapa base / Ortofoto / Sin fondo | Cambia el fondo del IGN |
+| Carreteras / PK | Muestra u oculta cada capa |
+| Poblaciones | Muestra u oculta los 103 núcleos del IGN (punto azul y etiqueta blanca con borde rojo y texto negro; nombre, habitantes y altitud) |
+| Selector de color | Elige el color de las carreteras |
+| Selector de grosor | Elige la anchura de las carreteras: **Fino, Medio, Normal, Grueso o Muy grueso** (la carretera seleccionada se resalta) |
+| Etiquetas carreteras | Muestra u oculta `CC-420`, `CC-432`... (fondo blanco y texto negro; de lejos una por vía y más al acercar) |
+| Etiquetas PK | Muestra u oculta `PK-1`, `PK-2`... (fondo amarillo, visibles desde zoom 13) |
+| Ver todo | Vuelve a encuadrar la Zona 4 |
+| Instrucciones | Abre en pantalla el resumen para ordenador, GitHub e iPhone |
+| Buscar (caja única) | Carreteras y poblaciones juntas. Escribe `CC-432`, `Trujillo` o `Navezuelas`: si hay una sola coincidencia va directo; si hay varias (p. ej. `Trujillo`) elige en la lista **Carretera** (→ `CC-330`) o **Población** (→ el pueblo). Flechas y Enter también funcionan |
+| Medir distancias | Pulsa el botón, haz clic en el punto de partida y luego en cada punto: muestra el último tramo y la distancia **TOTAL** acumulada |
+| Terminar / Borrar | Termina la medición / borra los puntos (panel "Medición") |
+| Mi ubicación | Activa el GPS; punto azul + círculo de precisión |
+| Siguiendo / Seguir | Reactiva el seguimiento si has arrastrado el mapa |
+| Pulsar en el mapa | Muestra **Coordenadas del punto**: WGS84 (lat/lon) y ETRS89 UTM (Este/Norte en metros), con botón **Copiar**. El huso se calcula según la longitud: **30N** en la Zona 4 y **29N** si entra una carretera más al oeste |
+
+Al tocar una carretera ves su longitud en **km** (en negrita) y justo debajo en **m**, ambos con el mismo tamaño. Al tocar un PK ves su número (sin cota).
+
+También hay una copia ligera (`Mapa_Zona4.html` en la carpeta principal) que
+funciona sin internet, y un resumen para ordenador y móvil en `INSTRUCCIONES.txt`.
+
+---
+
+## Actualizar el mapa más adelante
+
+Sustituye `index.html` por la versión nueva en el repositorio y haz **Commit changes**. GitHub Pages se actualiza solo en 1–2 minutos.
+
+**Nota:** los fondos del IGN se descargan de internet; las carreteras y los PK van dentro del HTML, así que siguen viéndose aunque falle el fondo.
