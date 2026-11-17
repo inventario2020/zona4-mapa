@@ -883,7 +883,7 @@ D.roads.forEach((r,i)=>{
  const casing=L.polyline(r[3],{color:'#ffffff',weight:roadWeight+4,opacity:.95,lineCap:'round',interactive:false});
  const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round'});
  line.bindPopup('<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b><br><span>'+fmt(r[2])+' m</span></div>');
- line.on('click',()=>select(i));
+ line.on('click',e=>{select(i);if(refOn){lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);}});
  roadGroup.addLayer(casing).addLayer(line); RL.push(line); CASING.push(casing);
  /* etiquetas ordenadas desde el centro de la via: de lejos solo la central,
     y se van mostrando mas conforme aumenta el zoom */
@@ -914,7 +914,7 @@ D.pks.forEach(p=>{
 function select(i){
  if(sel>=0&&RL[sel])RL[sel].setStyle({color:roadColor,weight:roadWeight});
  sel=i; RL[i].setStyle({color:'#f43f5e',weight:roadWeight+4}); RL[i].bringToFront();
- if(refOn&&lrsLastLL){lrsManualUntil=Date.now()+20000;updateLRS(lrsLastLL);}
+ if(refOn&&lrsLastLL&&lrsLastFromGps){lrsManualUntil=Date.now()+20000;updateLRS(lrsLastLL);}
 }
 function refreshLabels(){
  const z=map.getZoom();
@@ -1195,7 +1195,7 @@ const LRS=(()=>{
 })();
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
-let refOn=true, lrsLastLL=null, lrsManualUntil=0;
+let refOn=true, lrsLastLL=null, lrsManualUntil=0, lrsLastFromGps=false;
 function updateLRS(ll,gpsAcc,fromGps){
  if(fromGps&&Date.now()<lrsManualUntil)return;
  const e=LRS.estimate(ll,sel>=0?D.roads[sel][0]:null),panel=$('lrsInfo');
@@ -1206,7 +1206,7 @@ function updateLRS(ll,gpsAcc,fromGps){
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
- lrsLast=e; lrsLastLL=ll;
+ lrsLast=e; lrsLastLL=ll; lrsLastFromGps=!!fromGps;
 }
 map.on('click',e=>{lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);});
 
