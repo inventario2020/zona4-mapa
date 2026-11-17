@@ -684,6 +684,7 @@ button,input,select{font:inherit;font-size:12px;border:1px solid #cbd5e1;border-
 button{cursor:pointer;background:#f8fafc}
 button:active{background:#e2e8f0}
 button.on{background:#0d9488;border-color:#0d9488;color:#fff}
+#bRef.on{background:#3d42c8;border-color:#3d42c8;color:#fff}
 #searchWrap{position:relative;flex:1;min-width:150px}
 #q{width:100%}
 #suggest{position:absolute;left:0;right:0;top:calc(100% + 3px);z-index:1002;background:#fff;border:1px solid #cbd5e1;border-radius:7px;box-shadow:0 4px 14px #0002;max-height:260px;overflow:auto;display:none}
@@ -761,6 +762,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <button id="bCC" class="on">Etiquetas carreteras</button>
  <button id="bPKlbl" class="on">Etiquetas PK</button>
  <button id="bCoord" class="on">Coordenadas</button>
+ <button id="bRef" class="on">Referencial</button>
  <button id="bMeasure">Medir distancias</button>
  <button id="zfit">Ver todo</button>
  <button id="bHelp">Instrucciones</button>
@@ -1147,17 +1149,25 @@ const LRS=(()=>{
 })();
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
+let refOn=true, lrsLastLL=null;
 function updateLRS(ll,gpsAcc){
  const e=LRS.estimate(ll),panel=$('lrsInfo');
+ if(!refOn){panel.style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}return;}
  if(!e){panel.style.display='none';return;}
  $('lrsRoad').textContent=e.name;
  $('lrsPk').textContent=fmtPK(e.pk);
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
- lrsLast=e;
+ lrsLast=e; lrsLastLL=ll;
 }
 map.on('click',e=>{updateLRS(e.latlng);});
+$('bRef').onclick=()=>{
+ refOn=!refOn;
+ $('bRef').classList.toggle('on',refOn);
+ if(!refOn){$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}}
+ else if(lrsLastLL){updateLRS(lrsLastLL);}
+};
 </script>
 </body>
 </html>
