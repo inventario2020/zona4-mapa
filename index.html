@@ -1147,7 +1147,7 @@ const LRS=(()=>{
  return {estimate};
 })();
 let lrsMarker=null,lrsLast=null;
-function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+'m';}
+function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0');}
 function updateLRS(ll,gpsAcc){
  const e=LRS.estimate(ll),panel=$('lrsInfo');
  if(!e){panel.style.display='none';return;}
