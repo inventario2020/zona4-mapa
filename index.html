@@ -1142,10 +1142,10 @@ bGps.onclick=()=>{
  if(!navigator.geolocation){gpsText('Este navegador no permite geolocalización.');return;}
  gpsText('Buscando señal GPS…');
  watchId=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
- bGps.classList.add('on'); bGps.textContent='Desactivar GPS';
+ bGps.classList.add('on'); bGps.textContent='Desactivar GPS'; lrsManualUntil=0;
  bFollow.style.display=''; bFollow.classList.add('on'); following=true;
 };
-bFollow.onclick=()=>{following=!following;bFollow.classList.toggle('on',following);bFollow.textContent=following?'Siguiendo':'Seguir';};
+bFollow.onclick=()=>{following=!following;bFollow.classList.toggle('on',following);bFollow.textContent=following?'Siguiendo':'Seguir';if(following)lrsManualUntil=0;};
 map.on('dragstart',()=>{if(following){following=false;bFollow.classList.remove('on');bFollow.textContent='Seguir';}});
 map.fitBounds(D.bbox,{padding:[20,20]});
 refreshLabels();
@@ -1209,6 +1209,17 @@ function updateLRS(ll,gpsAcc,fromGps){
  lrsLast=e; lrsLastLL=ll;
 }
 map.on('click',e=>{lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);});
+let lrsMapAt=0;
+function updateLRSDesdeMapa(){
+ if(!refOn)return;
+ const now=Date.now();
+ if(now-lrsMapAt<80)return;
+ lrsMapAt=now; lrsManualUntil=now+20000;
+ updateLRS(map.getCenter());
+}
+map.on('drag',updateLRSDesdeMapa);
+map.on('zoomend',updateLRSDesdeMapa);
+
 $('bRef').onclick=()=>{
  refOn=!refOn;
  $('bRef').classList.toggle('on',refOn);
