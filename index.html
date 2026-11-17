@@ -782,9 +782,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  </div>
  <div id="lrsInfo">
  <div><span class="lbl">Vía:</span> <span id="lrsRoad"></span></div>
- <div><span class="lbl">Progresiva:</span> <span id="lrsProg"></span></div>
  <div><span class="lbl">PK:</span> <span id="lrsPk" class="pk"></span></div>
- <div><span class="lbl">Fecha:</span> <span id="lrsDate"></span> <span id="lrsDetail" class="small"></span></div>
  <button id="lrsCopy">Copiar</button> <button id="lrsClose">Cerrar</button>
 </div><div id="gpsInfo"></div>
  <div id="measureInfo"><b>Medición</b><div id="measureText"></div><button id="mEnd">Terminar</button> <button id="mClear">Borrar</button></div>
@@ -1154,17 +1152,14 @@ function updateLRS(ll,gpsAcc){
  const e=LRS.estimate(ll),panel=$('lrsInfo');
  if(!e){panel.style.display='none';return;}
  $('lrsRoad').textContent=e.code+' '+e.name;
- $('lrsProg').textContent=Math.round(e.pk*1000)+' m';
  $('lrsPk').textContent=fmtPK(e.pk);
- $('lrsDate').textContent=new Date().toLocaleDateString('es-ES');
- $('lrsDetail').textContent='· a '+Math.round(e.off)+' m'+(gpsAcc?' · GPS ±'+Math.round(gpsAcc)+' m':'')+' · ±'+Math.round(e.acc)+' m';
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
  lrsLast=e;
 }
 $('lrsClose').onclick=()=>{$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}};
-$('lrsCopy').onclick=()=>{if(!lrsLast)return;const t='Vía: '+lrsLast.code+' '+lrsLast.name+'\nProgresiva: '+Math.round(lrsLast.pk*1000)+' m\nPK: '+fmtPK(lrsLast.pk)+'\nFecha: '+new Date().toLocaleDateString('es-ES');if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});};
+$('lrsCopy').onclick=()=>{if(!lrsLast)return;const t='Vía: '+lrsLast.code+' '+lrsLast.name+'\nPK: '+fmtPK(lrsLast.pk);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});};
 map.on('click',e=>{updateLRS(e.latlng);});
 </script>
 </body>
