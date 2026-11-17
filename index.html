@@ -760,6 +760,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  </select>
  <button id="bCC" class="on">Etiquetas carreteras</button>
  <button id="bPKlbl" class="on">Etiquetas PK</button>
+ <button id="bCoord" class="on">Coordenadas</button>
  <button id="bMeasure">Medir distancias</button>
  <button id="zfit">Ver todo</button>
  <button id="bHelp">Instrucciones</button>
@@ -1014,7 +1015,13 @@ $('cCopy').onclick=()=>{
  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).catch(()=>{});
 };
 $('cClose').onclick=()=>{$('coordInfo').style.display='none';};
-map.on('click',e=>{$('suggest').style.display='none'; showCoords(e.latlng);});
+let coordOn=true;
+$('bCoord').onclick=()=>{
+ coordOn=!coordOn;
+ $('bCoord').classList.toggle('on',coordOn);
+ if(coordOn){if(lastLL)showCoords(lastLL);}else{$('coordInfo').style.display='none';}
+};
+map.on('click',e=>{$('suggest').style.display='none'; if(coordOn) showCoords(e.latlng);});
 /* --- medicion de distancias --- */
 map.createPane('measurePane');
 map.getPane('measurePane').style.zIndex=450;
