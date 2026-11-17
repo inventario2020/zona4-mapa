@@ -911,6 +911,7 @@ D.pks.forEach(p=>{
 function select(i){
  if(sel>=0&&RL[sel])RL[sel].setStyle({color:roadColor,weight:roadWeight});
  sel=i; RL[i].setStyle({color:'#f43f5e',weight:roadWeight+4}); RL[i].bringToFront();
+ if(refOn&&lrsLastLL)updateLRS(lrsLastLL);
 }
 function refreshLabels(){
  const z=map.getZoom();
@@ -1136,9 +1137,9 @@ const LRS=(()=>{
   }
   return {code:r[0],name:r[1],len:r[2],pts,A,B,maxErr,anchors:anchors.length};
  });
- function estimate(ll){
+ function estimate(ll,forceCode){
   const p=xy([ll.lat,ll.lng]);let best=null;
-  for(const r of roads){const n=nearest(p,r.pts);if(n.d<1000&&(!best||n.d<best.n.d))best={r,n};}
+  for(const r of roads){if(forceCode&&r.code!==forceCode)continue;const n=nearest(p,r.pts);if(n.d<(forceCode?3000:1000)&&(!best||n.d<best.n.d))best={r,n};}
   if(!best)return null;
   let pk=best.r.A*best.n.s+best.r.B;
   pk=Math.max(0,Math.min(best.r.len/1000,pk));
@@ -1151,7 +1152,7 @@ let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
 let refOn=true, lrsLastLL=null;
 function updateLRS(ll,gpsAcc){
- const e=LRS.estimate(ll),panel=$('lrsInfo');
+ const e=LRS.estimate(ll,sel>=0?D.roads[sel][0]:null),panel=$('lrsInfo');
  if(!refOn){panel.style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}return;}
  if(!e){panel.style.display='none';return;}
  $('lrsRoad').textContent=e.name;
@@ -1166,7 +1167,7 @@ $('bRef').onclick=()=>{
  refOn=!refOn;
  $('bRef').classList.toggle('on',refOn);
  if(!refOn){$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}}
- else if(lrsLastLL){updateLRS(lrsLastLL);}
+ else {updateLRS(lrsLastLL||map.getCenter());}
 };
 </script>
 </body>
