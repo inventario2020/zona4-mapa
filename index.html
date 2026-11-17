@@ -1151,7 +1151,7 @@ function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+Str
 function updateLRS(ll,gpsAcc){
  const e=LRS.estimate(ll),panel=$('lrsInfo');
  if(!e){panel.style.display='none';return;}
- $('lrsRoad').textContent=e.code+' '+e.name;
+ $('lrsRoad').textContent=e.name;
  $('lrsPk').textContent=fmtPK(e.pk);
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
@@ -1159,7 +1159,7 @@ function updateLRS(ll,gpsAcc){
  lrsLast=e;
 }
 $('lrsClose').onclick=()=>{$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}};
-$('lrsCopy').onclick=()=>{if(!lrsLast)return;const t='Vía: '+lrsLast.code+' '+lrsLast.name+'\nPK: '+fmtPK(lrsLast.pk);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});};
+$('lrsCopy').onclick=()=>{if(!lrsLast)return;const t='Vía: '+lrsLast.name+'\nPK: '+fmtPK(lrsLast.pk);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});};
 map.on('click',e=>{updateLRS(e.latlng);});
 </script>
 </body>
