@@ -911,7 +911,7 @@ D.pks.forEach(p=>{
 function select(i){
  if(sel>=0&&RL[sel])RL[sel].setStyle({color:roadColor,weight:roadWeight});
  sel=i; RL[i].setStyle({color:'#f43f5e',weight:roadWeight+4}); RL[i].bringToFront();
- if(refOn&&lrsLastLL)updateLRS(lrsLastLL);
+ if(refOn&&lrsLastLL){lrsManualUntil=Date.now()+20000;updateLRS(lrsLastLL);}
 }
 function refreshLabels(){
  const z=map.getZoom();
@@ -1080,7 +1080,7 @@ function onPos(p){
  const spd=c.speed==null?'—':(c.speed*3.6).toFixed(1)+' km/h';
  const rumbo=c.heading==null?'—':Math.round(c.heading)+'°';
  gpsText('<b style="color:#1d4ed8">● Ubicación activa</b><br>Precisión ±'+m+' m · Velocidad '+spd+'<br>Rumbo '+rumbo+' · '+new Date(p.timestamp).toLocaleTimeString('es-ES'));
- updateLRS(L.latLng(lat,lng),m);
+ updateLRS(L.latLng(lat,lng),m,true);
 }
 function onErr(e){
  const msg=e.code===1?'Permiso denegado. Activa la ubicación para este sitio.':e.code===2?'No se puede obtener la posición.':e.code===3?'Tiempo de espera agotado.':'Error de ubicación.';
@@ -1151,8 +1151,9 @@ const LRS=(()=>{
 })();
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
-let refOn=true, lrsLastLL=null;
-function updateLRS(ll,gpsAcc){
+let refOn=true, lrsLastLL=null, lrsManualUntil=0;
+function updateLRS(ll,gpsAcc,fromGps){
+ if(fromGps&&Date.now()<lrsManualUntil)return;
  const e=LRS.estimate(ll,sel>=0?D.roads[sel][0]:null),panel=$('lrsInfo');
  if(!refOn){panel.style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}return;}
  if(!e){panel.style.display='none';return;}
@@ -1163,7 +1164,7 @@ function updateLRS(ll,gpsAcc){
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
  lrsLast=e; lrsLastLL=ll;
 }
-map.on('click',e=>{updateLRS(e.latlng);});
+map.on('click',e=>{lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);});
 $('bRef').onclick=()=>{
  refOn=!refOn;
  $('bRef').classList.toggle('on',refOn);
