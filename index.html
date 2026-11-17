@@ -783,7 +783,6 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <div id="lrsInfo">
  <div><span class="lbl">Vía:</span> <span id="lrsRoad"></span></div>
  <div><span class="lbl">PK:</span> <span id="lrsPk" class="pk"></span></div>
- <button id="lrsCopy">Copiar</button> <button id="lrsClose">Cerrar</button>
 </div><div id="gpsInfo"></div>
  <div id="measureInfo"><b>Medición</b><div id="measureText"></div><button id="mEnd">Terminar</button> <button id="mClear">Borrar</button></div>
  <div id="helpPanel">
@@ -1147,7 +1146,7 @@ const LRS=(()=>{
  return {estimate};
 })();
 let lrsMarker=null,lrsLast=null;
-function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0');}
+function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
 function updateLRS(ll,gpsAcc){
  const e=LRS.estimate(ll),panel=$('lrsInfo');
  if(!e){panel.style.display='none';return;}
@@ -1158,8 +1157,6 @@ function updateLRS(ll,gpsAcc){
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
  lrsLast=e;
 }
-$('lrsClose').onclick=()=>{$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}};
-$('lrsCopy').onclick=()=>{if(!lrsLast)return;const t='Vía: '+lrsLast.name+'\nPK: '+fmtPK(lrsLast.pk);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>{});};
 map.on('click',e=>{updateLRS(e.latlng);});
 </script>
 </body>
