@@ -132,6 +132,7 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 - Al pinchar el punto azul del Referencial o el marcador rojo del PK buscado se muestra el dato del Referencial (vía y PK exactos) sin alterar el panel; la ficha de carretera con la longitud sigue abriéndose al pinchar la vía, con o sin Referencial activado.
 - **Con Referencial activado**, al pinchar sobre una vía o sobre un punto del Referencial se abre solo una etiqueta pequeña con **fondo azul y letras blancas, sin reborde**, con el formato `CC-101    PK: 3+532` (clave, cuatro espacios, `PK:` y el PK sin sufijo `m`) y las coordenadas WGS84/ETRS89-UTM del punto; NO se muestra la ficha con `LONGITUD`, `DENOMINAC` ni otros datos de carretera. Con el Referencial desactivado, al pinchar la vía se abre la ficha completa con la longitud, como antes.
 - El título compartido de Zona 1 pasa a ser **«Carreteras de Zona 1 Coria (Norte-Oeste)»**, con el mismo formato «Carreteras de Zona X…» que Zona 4. Se añaden `og:type`, `og:title` y `og:description` en los 8 visores para que la vista previa al compartir el enlace use ese título y no el nombre de usuario.
+- A petición del usuario, se retiran las metaetiquetas `og` de los visores de Zona 4, que vuelven exactamente a su estado anterior (solo `<title>` y `<h1>` con `Carreteras de Zona 4 Trujillo (Sur-Este)`). Zona 1 conserva sus metaetiquetas `og`.
 - Verificado sin errores JS en los 4 visores (2 completos + 2 ligeros): marcadores `40.21064,-6.84240` y `39.44641,-5.64087`, zoom 16; la búsqueda de carreteras y poblaciones sigue intacta.
 - Actualizados `INSTRUCCIONES.txt` (Zona 1, Zona 4 y copias de staging/canónico), los README de Pages y el generador `package_zona1.py`.
 
@@ -141,7 +142,7 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 |---|---|---|
 | `zona1-mapa` | `index.html` | `5A82DCBCE1EC526E4B1D161413EF82C3` |
 | `zona1-mapa` | `README.md` | `F742D02EAD49CE38D6001C6BBD33EC06` |
-| `zona4-mapa` | `index.html` | `F16B715DDEF9C3250BC782329E90B9FE` |
+| `zona4-mapa` | `index.html` | `BFA6AEB6AC487DBE6E7A8441F7CC083D` |
 | `zona4-mapa` | `README.md` | `C75AD1159D241DF07895E77CEF3B9E27` |
 
 Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py`; no se incluye su propio hash para evitar una autorreferencia.
@@ -153,3 +154,4 @@ Commit de este ajuste en ambos repositorios: `Clic en puntos del Referencial mue
 Commit de este ajuste en ambos repositorios: `Referencial activo: etiqueta PK pequeña con coordenadas y sin ficha de carretera`.
 Commit de este ajuste en ambos repositorios: `Etiqueta Referencial con fondo azul, letras blancas y PK separado`.
 Commit de este ajuste en ambos repositorios: `Título de compartir de Zona 1 igual al de Zona 4`.
+Commit de este ajuste en ambos repositorios: `Zona 4 sin metaetiquetas og, como estaba antes`.
