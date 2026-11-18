@@ -127,6 +127,7 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 - `parseRefQuery()` detecta «vía + PK», `findResults()` añade el resultado `PK` y `goRes()` llama a `goRef()`. El resultado se enumera en el desplegable con etiqueta roja y se centra con `map.setView(...,16,{animate:false})`, válido también en pestañas de segundo plano.
 - Se resaltan en rojo la vía y el punto, y el panel del Referencial muestra exactamente el PK pedido (`2+522 m` / `10+150 m`). Las vías inexistentes y los PK fuera de rango se avisan en el propio desplegable (o en `#infoBody` en las versiones ligeras), sin ocultar el aviso.
 - **CC-432** ya no aparece como ejemplo en el buscador ni en las ayudas de Zona 4; sigue existiendo como carretera real en los datos.
+- El texto de la caja dice literalmente **«Búsqueda por carretera, población o por PK de Referencial»** (p. ej. `Búsqueda por carretera, población o por PK de Referencial (CC-102 2+522)`), sin botón ni panel aparte.
 - Verificado sin errores JS en los 4 visores (2 completos + 2 ligeros): marcadores `40.21064,-6.84240` y `39.44641,-5.64087`, zoom 16; la búsqueda de carreteras y poblaciones sigue intacta.
 - Actualizados `INSTRUCCIONES.txt` (Zona 1, Zona 4 y copias de staging/canónico), los README de Pages y el generador `package_zona1.py`.
 
@@ -134,9 +135,9 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 
 | Repositorio | Archivo | MD5 |
 |---|---|---|
-| `zona1-mapa` | `index.html` | `02563BB45C9118A9FD9CF9E0E9C76D28` |
+| `zona1-mapa` | `index.html` | `8436B73F9A090ABAC15FD33650CEFDE4` |
 | `zona1-mapa` | `README.md` | `FB9A275828CC5002A443E98A162DBD4B` |
-| `zona4-mapa` | `index.html` | `D83743524A365F7FC9F4F5CAED4ED95C` |
+| `zona4-mapa` | `index.html` | `F8525601313F2D879F0F8E8F02D20EDC` |
 | `zona4-mapa` | `README.md` | `C75AD1159D241DF07895E77CEF3B9E27` |
 
 Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py`; no se incluye su propio hash para evitar una autorreferencia.
