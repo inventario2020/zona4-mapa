@@ -671,6 +671,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #lrsInfo .pk{font-weight:800;color:#fff}
 #lrsInfo .small{color:#dbeafe}
 #lrsInfo button{margin-top:3px;padding:1px 5px;font-size:9px;color:#3d42c8;background:#fff;border:0;border-radius:3px}
+#lrsInfo .pkmini{background:#fff;color:#1d4ed8;border:1px solid #1d4ed8;border-radius:3px;padding:1px 5px;font-size:10px;font-weight:800;display:inline-block;font-variant-numeric:tabular-nums}
+.leaflet-popup-content-wrapper .pkmini{background:#fff;color:#1d4ed8;border:1px solid #1d4ed8;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:3px;font-variant-numeric:tabular-nums}
+.leaflet-popup-content{margin:6px 9px;font-size:11px;line-height:1.3}
 </style>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -885,10 +888,20 @@ function coordHTML(lat,lng){
 }
 D.roads.forEach((r,i)=>{
  const casing=L.polyline(r[3],{color:'#ffffff',weight:roadWeight+4,opacity:.95,lineCap:'round',interactive:false});
- const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round'});
+ const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round',bubblingMouseEvents:false});
  const roadHTML=()=>'<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b> / <span>'+fmt(r[2])+' m</span></div>';
+ const pkMiniHTML=pk=>'<div class="pkmini">'+esc(r[0])+' PK '+miniPK(pk)+'</div>';
  line.bindPopup(roadHTML()+coordHTML(r[3][0][0],r[3][0][1]));
- line.on('click',e=>{select(i);line.setPopupContent(roadHTML()+coordHTML(e.latlng.lat,e.latlng.lng));if(refOn){lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);}});
+ line.on('click',e=>{
+   select(i);
+   if(refOn){
+     lrsManualUntil=Date.now()+20000;
+     updateLRS(e.latlng,0,false,false,true);
+     line.setPopupContent(pkMiniHTML($('lrsPk').textContent)+coordHTML(e.latlng.lat,e.latlng.lng));
+   }else{
+     line.setPopupContent(roadHTML()+coordHTML(e.latlng.lat,e.latlng.lng));
+   }
+ });
  roadGroup.addLayer(casing).addLayer(line); RL.push(line); CASING.push(casing);
  /* etiquetas ordenadas desde el centro de la via: de lejos solo la central,
     y se van mostrando mas conforme aumenta el zoom */
@@ -1274,9 +1287,10 @@ const LRS=(()=>{
 })();
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
+function miniPK(pk){return String(pk).replace(/\s*m$/i,'');}
 let refOn=true, lrsLastLL=null, lrsManualUntil=0, lrsLastFromGps=false;
 const LRS_TOL_M=30; /* el referencial solo sigue el cursor dentro de la traza */
-function updateLRS(ll,gpsAcc,fromGps,fromMapClick){
+function updateLRS(ll,gpsAcc,fromGps,fromMapClick,fromRoadClick){
  if(fromGps&&Date.now()<lrsManualUntil)return;
  const e=LRS.estimate(ll,sel>=0?D.roads[sel][0]:null),panel=$('lrsInfo');
  if(!refOn){panel.style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}return;}
@@ -1288,10 +1302,12 @@ function updateLRS(ll,gpsAcc,fromGps,fromMapClick){
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,bubblingMouseEvents:false}).addTo(map);
- lrsMarker.bindPopup(()=>'<h3>'+esc($('lrsRoad').textContent)+'</h3><div class="desc">Referencial · PK '+$('lrsPk').textContent+'</div>'+coordHTML(e.snap.lat,e.snap.lng));
+ lrsMarker.bindPopup(()=>'<div class="pkmini">'+esc(e.code)+' PK '+miniPK($('lrsPk').textContent)+'</div>'+coordHTML(e.snap.lat,e.snap.lng));
+ if(fromRoadClick||fromMapClick)lrsMarker.openPopup();
  lrsLast=e; lrsLastLL=ll; lrsLastFromGps=!!fromGps;
 }
 map.on('click',e=>{updateLRS(e.latlng,0,false,true);});
+$('bRef').addEventListener('click',()=>{if(!refOn&&lrsMarker){lrsMarker.closePopup();}});
 
 $('bRef').onclick=()=>{
  refOn=!refOn;
@@ -1331,7 +1347,7 @@ function goRef(r,pk){
  $('lrsPk').textContent=fmtPK(r.pk);
  if(refSearchMarker)map.removeLayer(refSearchMarker);
  refSearchMarker=L.circleMarker(r.ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#dc2626',fillOpacity:1,zIndexOffset:1200,bubblingMouseEvents:false}).addTo(map);
- refSearchMarker.bindPopup('<h3>'+esc(r.code)+'</h3><div class="desc">Referencial · PK '+fmtPK(pk)+'</div><div>'+esc(r.name)+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
+ refSearchMarker.bindPopup('<div class="pkmini">'+esc(r.code)+' PK '+miniPK(fmtPK(pk))+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
  map.setView(r.ll,16,{animate:false});
  refSearchMarker.openPopup();
 }
