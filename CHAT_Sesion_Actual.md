@@ -97,20 +97,22 @@ Si una pestaña antigua sigue mostrando el comportamiento anterior, es caché de
 
 ## 7. Pestaña «Búsqueda por Referencial» (última modificación)
 
-- Botón rojo **Búsqueda por Referencial** añadido a los 8 visores: los 6 completos/exportables y las 2 versiones ligeras.
+- Botón de acento rojo **Búsqueda por Referencial** añadido a los 8 visores: los 6 completos/exportables y las 2 versiones ligeras.
 - Permite introducir una carretera y su PK en varios formatos: `10+150`, `10150` o `10.150`. Ejemplos: Zona 4 `CC-420` + `10+150`; Zona 1 `CC-102` + `2+522`.
 - El mapa se centra en el punto exacto (zoom 16) y resalta **en rojo** la carretera y el PK. El panel del referencial muestra exactamente el PK solicitado.
 - Para PK intermedios se interpolan las posiciones de los PK reales del SHP; se validan vías inexistentes y PK fuera de rango con un mensaje en el propio panel.
 - Probado sin errores JS en los 4 visores: Zona 1 `2+522 m`, Zona 4 `10+150 m`; las versiones ligeras muestran el mismo resultado.
 - Actualizados el bloque de instrucciones del visor, `INSTRUCCIONES.txt`, los README de Pages y el generador `package_zona1.py`.
+- Retoque final: el botón es ahora una **etiqueta compacta** al estilo de las etiquetas de carretera: fondo blanco, texto rojo `#b91c1c`, borde/borde de caja rojo `#dc2626` de 1 px, fuente 10 px en negrita, `padding:2px 4px`, `border-radius:3px` y `white-space:nowrap` (128 x 14 px). Al abrir el panel se rellena de rojo. Verificado en los 8 visores, con las búsquedas `CC-102` + `2+522` y `CC-420` + `10+150`, sin errores JS.
 
 **Hashes vigentes tras este cambio** (los de la sección 4 quedan sustituidos por estos):
 
 | Repositorio | Archivo | MD5 |
 |---|---|---|
-| `zona1-mapa` | `index.html` | `CD962CAD8F9B1A3E3A22C1BFAEA00039` |
+| `zona1-mapa` | `index.html` | `C855F2B1642F307A7212AB9F192597DF` |
 | `zona1-mapa` | `README.md` | `0FA8BB8C2355411D594DAD56666691CE` |
-| `zona4-mapa` | `index.html` | `B700BEF53BC10FFAB4ACBA33453D561E` |
+| `zona4-mapa` | `index.html` | `A857EFD148E9AAC5467FC3AF3E652292` |
 | `zona4-mapa` | `README.md` | `F66D02C903814973443DCA4B1D7093E3` |
 
 Commit de esta fase en ambos repositorios: `Búsqueda por Referencial: ir a una vía por su PK y resaltarlo en rojo`.
+Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial más pequeño, estilo etiqueta`.
