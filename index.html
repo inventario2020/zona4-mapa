@@ -685,6 +685,16 @@ button{cursor:pointer;background:#f8fafc}
 button:active{background:#e2e8f0}
 button.on{background:#0d9488;border-color:#0d9488;color:#fff}
 #bRef.on{background:#3d42c8;border-color:#3d42c8;color:#fff}
+#bRefSearch{background:#dc2626;border-color:#dc2626;color:#fff;font-weight:700}
+#bRefSearch.on{background:#991b1b;border-color:#991b1b;color:#fff}
+#refSearchPanel{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:700;width:min(370px,calc(100% - 20px));background:#fff;border:2px solid #dc2626;border-radius:10px;padding:10px 12px;box-shadow:0 4px 18px #0003;font-size:11px;line-height:1.5;display:none}
+#refSearchPanel h2{margin:0 18px 4px 0;font-size:13px;color:#b91c1c}
+#refSearchPanel .sub{color:#64748b;margin-bottom:7px}
+#refSearchPanel label{display:block;margin:5px 0;font-weight:700;color:#374151}
+#refSearchPanel label input{display:block;width:100%;margin-top:2px;border-color:#fca5a5}
+#refSearchPanel .go{background:#dc2626;border-color:#dc2626;color:#fff;font-weight:700;margin-top:6px}
+#refSearchPanel .msg{margin-top:6px;min-height:14px;color:#b91c1c}
+#refSearchPanel .close{position:absolute;right:7px;top:5px;border:0;background:none;color:#b91c1c;font-size:17px;padding:0}
 #searchWrap{position:relative;flex:1;min-width:150px}
 #q{width:100%}
 #suggest{position:absolute;left:0;right:0;top:calc(100% + 3px);z-index:1002;background:#fff;border:1px solid #cbd5e1;border-radius:7px;box-shadow:0 4px 14px #0002;max-height:260px;overflow:auto;display:none}
@@ -764,6 +774,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <button id="bPKlbl" class="on">Etiquetas PK</button>
  <button id="bCoord" class="on">Coordenadas</button>
  <button id="bRef" class="on">Referencial</button>
+ <button id="bRefSearch" title="Ir a una carretera por su PK">Búsqueda por Referencial</button>
  <button id="bMeasure">Medir distancias</button>
  <button id="zfit">Ver todo</button>
  <button id="bHelp">Instrucciones</button>
@@ -791,6 +802,15 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
 </div><div id="gpsInfo"></div>
  <div id="wakeInfo"></div>
  <div id="measureInfo"><b>Medición</b><div id="measureText"></div><button id="mEnd">Terminar</button> <button id="mClear">Borrar</button></div>
+ <div id="refSearchPanel">
+  <button class="close" id="rsClose" aria-label="Cerrar">×</button>
+  <h2>Búsqueda por Referencial</h2>
+  <div class="sub">Escribe una carretera y su PK. Ejemplo: <b>CC-420</b> y <b>10+150</b> (o <b>10150</b>). El mapa va a ese punto y lo resalta en rojo.</div>
+  <label>Vía (clave)<input id="rsRoad" placeholder="CC-420" autocomplete="off"></label>
+  <label>PK<input id="rsPk" placeholder="10+150 o 10150" autocomplete="off"></label>
+  <button id="rsGo" class="go">Ir al PK</button>
+  <div class="msg" id="rsMsg"></div>
+ </div>
  <div id="helpPanel">
   <button class="close" id="bHelpClose" aria-label="Cerrar">×</button>
   <h2>Carreteras de Zona 4 Trujillo (Sur-Este)</h2>
@@ -803,6 +823,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
    <li>El <b>cuadradito de color</b> cambia el color y el <b>desplegable de grosor</b> (Fino, Medio, Normal, Grueso, Muy grueso) cambia la anchura de las carreteras; la seleccionada se resalta.</li>
   <li>Pulsa en cualquier punto del mapa: panel con <b>WGS84</b> (lat/lon) y <b>ETRS89 UTM</b> (Este/Norte). El huso se calcula solo: <b>30N</b> en la Zona 4 y <b>29N</b> si entra una carretera más al oeste. Botón Copiar.</li>
    <li><b>Referencial</b>: recuadro azul con Vía: y PK: real (p. ej. 1+158 m). Solo se actualiza al tocar la traza de la carretera (30 m); si tocas fuera conserva el último PK mientras buscas coordenadas. Con GPS activo sigue tu posición. Un clic manual manda durante 20 s.</li>
+    <li><b>Búsqueda por Referencial</b> (botón rojo): escribe la clave de una carretera y su PK (p. ej. <b>CC-420</b> y <b>10+150</b> o <b>10150</b>) y el mapa se centra en ese punto; la vía y el PK se resaltan en rojo.</li>
    <li><b>Pantalla siempre activa: OFF/ON</b> evita que el móvil apague la pantalla (Wake Lock).</li>
    </ol>
   <h3>En el iPhone</h3>
@@ -1216,7 +1237,7 @@ const LRS=(()=>{
   if(!isFinite(A)||Math.abs(A)<1e-9||maxErr>80){
    A=(r[2]/1000)/(nearest(pts[pts.length-1],pts).total||1);B=0;maxErr=Math.max(maxErr,80);
   }
-  return {code:r[0],name:r[1],len:r[2],pts,A,B,maxErr,anchors:anchors.length};
+  return {code:r[0],name:r[1],len:r[2],pts,A,B,maxErr,anchors:anchors.length,anchorList:anchors};
  });
  function estimate(ll,forceCode){
   const p=xy([ll.lat,ll.lng]);let best=null,forced=null;
@@ -1228,7 +1249,39 @@ const LRS=(()=>{
   const snap=L.CRS.EPSG3857.unproject(L.point(best.n.px/k,best.n.py/k));
   return {code:best.r.code,name:best.r.name,pk,off:best.n.d,acc:best.r.maxErr,snap};
  }
- return {estimate};
+  function pointAt(pts,s){
+   let acc=0;
+   for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i],vx=b[0]-a[0],vy=b[1]-a[1],len=Math.hypot(vx,vy);
+    if(acc+len>=s){const t=len?Math.max(0,Math.min(1,(s-acc)/len)):0;return [a[0]+vx*t,a[1]+vy*t];}
+    acc+=len;
+   }
+   return pts[pts.length-1];
+  }
+  function locate(code,pk){
+   const c=norm(code),r=roads.find(x=>norm(x.code)===c)||roads.find(x=>norm(x.code).startsWith(c));
+   if(!r)return {error:'No se encontró la carretera «'+code+'». Revisa la clave.'};
+   const max=r.len/1000;
+   if(!isFinite(pk)||pk<0||pk>max)return {error:'PK '+fmtPK(Math.max(0,pk))+' fuera de rango: '+r.code+' llega hasta '+fmtPK(max)+'.'};
+   const exact=D.pks.find(p=>p[2]===r.code&&Math.abs(p[3]-pk)<0.0005);
+   if(exact)return {code:r.code,name:r.name,pk,ll:L.latLng(exact[0],exact[1])};
+   const as=r.anchorList.slice().sort((a,b)=>a.pk-b.pk);
+   let s=null;
+   const pick=(a0,a1)=>{const d=a1.pk-a0.pk;return d?a0.n.s+(pk-a0.pk)/d*(a1.n.s-a0.n.s):a0.n.s;};
+   if(as.length>=2){
+    let lo=null,hi=null;
+    for(const o of as){if(o.pk<=pk)lo=o;if(o.pk>=pk&&!hi)hi=o;}
+    if(lo&&hi&&lo!==hi)s=pick(lo,hi);
+    else if(!lo)s=pick(as[0],as[1]);
+    else if(!hi)s=pick(as[as.length-2],as[as.length-1]);
+   }
+   if(s==null||!isFinite(s))s=(pk-r.B)/r.A;
+   const total=nearest(r.pts[r.pts.length-1],r.pts).total;
+   s=Math.max(0,Math.min(total,isFinite(s)?s:0));
+   const p=pointAt(r.pts,s);
+   return {code:r.code,name:r.name,pk,ll:L.CRS.EPSG3857.unproject(L.point(p[0]/k,p[1]/k))};
+  }
+ return {estimate,locate};
 })();
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
@@ -1256,6 +1309,48 @@ $('bRef').onclick=()=>{
  if(!refOn){$('lrsInfo').style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}}
  else {updateLRS(lrsLastLL||map.getCenter());}
 };
+/* --- Búsqueda por Referencial: ir a una vía por su PK --- */
+function parsePK(txt){
+ let s=String(txt==null?'':txt).trim().replace(/\s+/g,'').replace(/m$/i,'');
+ if(!s)return NaN;
+ if(s.indexOf('+')>=0){
+  const a=s.split('+');if(a.length!==2)return NaN;
+  const km=Number(a[0].replace(',','.')),m=Number(a[1].replace(',','.'));
+  return isFinite(km)&&isFinite(m)?km+m/1000:NaN;
+ }
+ s=s.replace(',','.');
+ const v=Number(s);
+ return isFinite(v)?(s.indexOf('.')>=0?v:v/1000):NaN;
+}
+let refSearchMarker=null;
+function goRefSearch(){
+ const code=$('rsRoad').value.trim(),pk=parsePK($('rsPk').value),msg=$('rsMsg');
+ if(!code||!isFinite(pk)){msg.innerHTML='<b>Escribe una vía y un PK válido</b> (p. ej. CC-420 y 10+150).';return;}
+ if(!refOn){refOn=true;$('bRef').classList.add('on');}
+ const r=LRS.locate(code,pk);
+ if(r.error){msg.innerHTML='<b>'+esc(r.error)+'</b>';return;}
+ const i=D.roads.findIndex(x=>x[0]===r.code);
+ if(i>=0)select(i);
+ lrsManualUntil=Date.now()+20000;
+ updateLRS(r.ll);
+ $('lrsRoad').textContent=r.name;
+ $('lrsPk').textContent=fmtPK(r.pk);
+ if(refSearchMarker)map.removeLayer(refSearchMarker);
+ refSearchMarker=L.circleMarker(r.ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#dc2626',fillOpacity:1,zIndexOffset:1200}).addTo(map);
+ refSearchMarker.bindPopup('<h3>'+esc(r.code)+' · PK '+fmtPK(r.pk)+'</h3><div class="desc">'+esc(r.name)+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
+ map.setView(r.ll,16,{animate:false});
+ refSearchMarker.openPopup();
+ msg.innerHTML='<b>'+esc(r.code)+' · PK '+fmtPK(r.pk)+'</b> — resaltado en rojo';
+}
+$('bRefSearch').onclick=()=>{
+ const p=$('refSearchPanel'),on=p.style.display!=='block';
+ p.style.display=on?'block':'none';
+ $('bRefSearch').classList.toggle('on',on);
+ if(on)$('rsRoad').focus();
+};
+$('rsClose').onclick=()=>{$('refSearchPanel').style.display='none';$('bRefSearch').classList.remove('on');};
+$('rsGo').onclick=goRefSearch;
+['rsRoad','rsPk'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();goRefSearch();}}));
 </script>
 </body>
 </html>

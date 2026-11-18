@@ -66,10 +66,10 @@ Conteos comprobados en vivo: Zona 1 = 69 carreteras, 474 PK, 80 poblaciones; Zon
 
 | Repositorio | Archivo | MD5 |
 |---|---|---|
-| `zona1-mapa` | `index.html` | `0B1A2FBDB271B75FD13EB9B4C9F346A6` |
-| `zona1-mapa` | `README.md` | `7DDF706289AAB09F514E7655C63052CE` |
-| `zona4-mapa` | `index.html` | `05D19F29DCEAC4784F080C4CC882B9E0` |
-| `zona4-mapa` | `README.md` | `8BABFE15DBE2E175F796C95C9C1789C1` |
+| `zona1-mapa` | `index.html` | `CD962CAD8F9B1A3E3A22C1BFAEA00039` |
+| `zona1-mapa` | `README.md` | `0FA8BB8C2355411D594DAD56666691CE` |
+| `zona4-mapa` | `index.html` | `B700BEF53BC10FFAB4ACBA33453D561E` |
+| `zona4-mapa` | `README.md` | `F66D02C903814973443DCA4B1D7093E3` |
 
 Todos ellos coinciden byte a byte con las copias locales.
 
@@ -92,3 +92,25 @@ Si una pestaña antigua sigue mostrando el comportamiento anterior, es caché de
 - ZIP regenerados para las dos zonas e incluyen este fichero.
 - Servidor temporal del puerto `8765` cerrado.
 - Pestañas de prueba y de GitHub cerradas; solo quedan abiertas las dos versiones vivas actualizadas.
+
+---
+
+## 7. Pestaña «Búsqueda por Referencial» (última modificación)
+
+- Botón rojo **Búsqueda por Referencial** añadido a los 8 visores: los 6 completos/exportables y las 2 versiones ligeras.
+- Permite introducir una carretera y su PK en varios formatos: `10+150`, `10150` o `10.150`. Ejemplos: Zona 4 `CC-420` + `10+150`; Zona 1 `CC-102` + `2+522`.
+- El mapa se centra en el punto exacto (zoom 16) y resalta **en rojo** la carretera y el PK. El panel del referencial muestra exactamente el PK solicitado.
+- Para PK intermedios se interpolan las posiciones de los PK reales del SHP; se validan vías inexistentes y PK fuera de rango con un mensaje en el propio panel.
+- Probado sin errores JS en los 4 visores: Zona 1 `2+522 m`, Zona 4 `10+150 m`; las versiones ligeras muestran el mismo resultado.
+- Actualizados el bloque de instrucciones del visor, `INSTRUCCIONES.txt`, los README de Pages y el generador `package_zona1.py`.
+
+**Hashes vigentes tras este cambio** (los de la sección 4 quedan sustituidos por estos):
+
+| Repositorio | Archivo | MD5 |
+|---|---|---|
+| `zona1-mapa` | `index.html` | `CD962CAD8F9B1A3E3A22C1BFAEA00039` |
+| `zona1-mapa` | `README.md` | `0FA8BB8C2355411D594DAD56666691CE` |
+| `zona4-mapa` | `index.html` | `B700BEF53BC10FFAB4ACBA33453D561E` |
+| `zona4-mapa` | `README.md` | `F66D02C903814973443DCA4B1D7093E3` |
+
+Commit de esta fase en ambos repositorios: `Búsqueda por Referencial: ir a una vía por su PK y resaltarlo en rojo`.

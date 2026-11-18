@@ -12,6 +12,8 @@ Esta carpeta contiene el visor listo para publicar:
 
 El **Referencial/LRS** solo se actualiza al tocar la traza de la carretera (30 m): si haces clic fuera se conserva el último PK mientras buscas coordenadas. Con el GPS activo sigue tu posición.
 
+El botón rojo **Búsqueda por Referencial** permite escribir una vía y su PK (p. ej. `CC-420` y `10+150` o `10150`): el mapa se centra en ese punto y resalta la carretera y el PK en rojo.
+
 GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
 
 El propio mapa lleva un botón **Instrucciones** en la barra superior con este resumen (PC, GitHub e iPhone).
