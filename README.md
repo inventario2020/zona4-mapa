@@ -14,9 +14,9 @@ El **Referencial/LRS** solo se actualiza al tocar la traza de la carretera (30 m
 
 La **Búsqueda por Referencial** está integrada en la **única caja de búsqueda** (la misma de carreteras y poblaciones): escribe la vía y su PK juntos, p. ej. `CC-420 10+150` o `CC-420 10150` (también `CC-420 10.150`). No hay botón ni panel aparte: el mapa se centra en ese punto (zoom 16) y resalta la carretera y el PK en rojo.
 
-GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
+GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en iOS / iPhone.
 
-El propio mapa lleva un botón **Instrucciones** en la barra superior con este resumen (PC, GitHub e iPhone).
+El propio mapa lleva un botón **Ayuda** en la barra superior con este resumen (PC, GitHub, iOS / iPhone y Android).
 
 ---
 
@@ -52,15 +52,17 @@ El propio mapa lleva un botón **Instrucciones** en la barra superior con este r
 
 ---
 
-## Usarlo en el iPhone
+## Usarlo en iOS / iPhone
 
-1. Abre **Safari** y pega la URL `https://...` (nunca `http://`).
+1. Abre **Safari** y pega la URL `https://...` (nunca `http://`): el GPS solo funciona con HTTPS.
 2. Pulsa **Activar GPS** y acepta **Permitir** cuando Safari pregunte por la ubicación.
 3. Para tenerlo como app: botón **Compartir → Añadir a la pantalla de inicio**. Así se abre siempre en HTTPS y el GPS sigue funcionando.
+4. **Pantalla siempre activa:** Safari en iOS no permite Wake Lock. Si se apaga la pantalla, ve a Ajustes → **Pantalla y brillo → Bloqueo automático → Nunca**.
 
 Si no sale el permiso:
 - Ajustes → **Privacidad y seguridad → Servicios de ubicación** → activar **Servicios de ubicación** y, dentro de **Safari**, marcar **Precisa**.
 - Comprueba que la URL empiece por `https://`.
+- Si ves una versión antigua del mapa, cierra la pestaña y vuelve a abrir el enlace.
 
 ---
 
@@ -92,7 +94,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Etiquetas carreteras | Muestra u oculta `CC-420`, `CC-432`... (fondo blanco y texto negro; de lejos una por vía y más al acercar) |
 | Etiquetas PK | Muestra u oculta `PK-1`, `PK-2`... (fondo amarillo, visibles desde zoom 13) |
 | Ver todo | Vuelve a encuadrar la Zona 4 |
-| Instrucciones | Abre en pantalla el resumen para ordenador, GitHub e iPhone |
+| Ayuda | Abre en pantalla el resumen para ordenador, GitHub, iOS / iPhone y Android |
 | Buscar (caja única) | Carreteras, PK y poblaciones juntos. Escribe `CC-420 10+150`, `CC-420`, `Trujillo` o `Navezuelas`: con vía + PK va directo al punto (zoom 16) y lo resalta en rojo; con una sola coincidencia va directo; si hay varias (p. ej. `Trujillo`) elige en la lista **Carretera** (→ `CC-330`) o **Población** (→ el pueblo). Flechas y Enter también funcionan |
 | Medir distancias | Pulsa el botón, haz clic en el punto de partida y luego en cada punto: muestra el último tramo y la distancia **TOTAL** acumulada |
 | Terminar / Borrar | Termina la medición / borra los puntos (panel "Medición") |
@@ -103,7 +105,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 Al tocar una carretera ves su longitud en **km** (en negrita), seguida de `/` y los **m** en la misma línea, ambos con el mismo tamaño; la ficha incluye además WGS84 y ETRS89/UTM (huso automático). Al tocar un PK ves su número (sin cota).
 
 También hay una copia ligera (`Mapa_Zona4.html` en la carpeta principal) que
-funciona sin internet, y un resumen para ordenador y móvil en `INSTRUCCIONES.txt`.
+funciona sin internet, y un resumen para ordenador y móvil en `Ayuda.txt`.
 
 ---
 

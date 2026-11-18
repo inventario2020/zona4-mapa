@@ -769,7 +769,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
  <button id="bRef" class="on">Referencial</button>
  <button id="bMeasure">Medir distancias</button>
  <button id="zfit">Ver todo</button>
- <button id="bHelp">Instrucciones</button>
+ <button id="bHelp">Ayuda</button>
  <span class="sep"></span>
  <button id="bGps">Activar GPS</button>
  <button id="bFollow" style="display:none">Siguiendo</button>
@@ -809,10 +809,12 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
     <li><b>Búsqueda por Referencial</b>: en la <b>única caja de búsqueda</b> escribe la vía y su PK (p. ej. <b>CC-420 10+150</b> o <b>CC-420 10150</b>), sin botón ni panel aparte. El mapa va a ese punto y resalta la vía y el PK en rojo.</li>
    <li><b>Pantalla siempre activa: OFF/ON</b> evita que el móvil apague la pantalla (Wake Lock).</li>
    </ol>
-  <h3>En el iPhone</h3>
-  <ol><li>Abre Safari y pega la URL <code>https://...</code> (nunca http://).</li>
-  <li>Pulsa <b>Activar GPS</b> → <b>Permitir</b>.</li>
-  <li>Compartir → <b>Añadir a la pantalla de inicio</b> para usarlo como app.</li></ol>
+  <h3>iOS / iPhone</h3>
+  <ol><li>Abre <b>Safari</b> y pega la URL <code>https://...</code> (nunca <code>http://</code>): el GPS solo funciona con HTTPS.</li>
+  <li>Pulsa <b>Activar GPS</b> → <b>Permitir</b>. Si no aparece: Ajustes → Privacidad y seguridad → Servicios de ubicación → activarlos y, en Safari, marcar <b>Precisa</b>.</li>
+  <li>Compartir → <b>Añadir a la pantalla de inicio</b> para usarlo como app.</li>
+  <li><b>Pantalla siempre activa</b>: Safari en iOS no permite Wake Lock. Si se apaga la pantalla, Ajustes → Pantalla y brillo → Bloqueo automático → <b>Nunca</b>.</li>
+  <li>Si ves una versión antigua, cierra la pestaña y vuelve a abrir el enlace.</li></ol>
   <h3>En Android</h3>
   <ol><li>Abre <b>Chrome</b> y pega la misma URL <code>https://...</code>.</li>
   <li>Pulsa <b>Activar GPS</b> → <b>Permitir</b> (también puedes ir a Ajustes → Apps → Chrome → Permisos → Ubicación).</li>

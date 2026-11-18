@@ -1,0 +1,81 @@
+AYUDA - CARRETERAS DE ZONA 4 Trujillo (Sur-Este)
+==================================================
+
+RESUMEN RAPIDO
+--------------
+En ordenador: doble clic en Mapa_Zona4_IGN.html (Chrome o Edge).
+En iPhone:    abre la URL HTTPS del visor en Safari > Activar GPS >
+              Permitir > Compartir > Anadir a la pantalla de inicio.
+En Android:   abre la URL HTTPS del visor > Activar GPS > Permitir >
+              Menu (tres puntos) > Anadir a pantalla de inicio / Instalar app.
+El boton "Ayuda" de la barra del mapa muestra este mismo resumen.
+
+ARCHIVOS INCLUIDOS
+------------------
+Mapa_Zona4_IGN.html   VERSION PRINCIPAL: carreteras + PK + fondos del IGN
+                      + GPS + Referencial/LRS + Pantalla siempre activa
+                      + coordenadas WGS84/UTM + etiquetas + color y grosor.
+                      Necesita internet para los fondos.
+Mapa_Zona4.html       VERSION LIGERA: funciona 100% sin internet.
+                      Carreteras y PK, Referencial (Via/PK) y coordenadas.
+                      Sin fondos ni GPS.
+Ayuda.txt            Este archivo.
+
+1) USO EN ORDENADOR (Windows)
+-----------------------------
+1. Abre la carpeta indicada arriba.
+2. Doble clic en Mapa_Zona4_IGN.html: se abre en Chrome o Edge.
+3. Con internet veras los fondos del IGN (topografico, mapa base u ortofoto).
+   Si no hay internet, pulsa "Sin fondo": carreteras y PK siguen visibles.
+4. Escribe en la unica caja de busqueda una carretera, una poblacion o
+   una via con su PK (por ejemplo CC-420 10+150 o Trujillo). Si hay
+   varias coincidencias, elige en la lista.
+5. "Medir distancias": clic en el inicio y en cada punto; muestra tramos
+   y total acumulado.
+6. El cuadradito de color cambia el color y el desplegable de grosor
+   cambia la anchura de las carreteras; la seleccionada se resalta.
+7. Pulsa en cualquier punto del mapa: panel con WGS84 (lat/lon) y
+   ETRS89 UTM (Este/Norte), con boton Copiar. Dentro tiene dos modos:
+   Pantalla y GPS.
+8. Referencial: recuadro azul con Via y PK real. Solo se actualiza al
+   tocar la traza (30 m); si tocas fuera conserva el ultimo PK. Con GPS
+   activo sigue tu posicion.
+9. Busqueda por Referencial integrada en la unica caja: escribe la via
+   y su PK juntos (Zona 4: CC-420 10+150 o CC-420 10150; Zona 1:
+   CC-102 2+522 o CC-102 2522). No hay boton ni panel aparte: el mapa
+   va a ese PK y resalta la via y el punto en rojo.
+10. Pantalla siempre activa ON/OFF evita que el movil apague la pantalla.
+
+2) EN iOS / IPHONE
+------------------
+1. Abre la URL HTTPS del visor en Safari (nunca http://). El GPS no
+   funciona abriendo el HTML desde Archivos.
+2. Pulsa "Activar GPS" y acepta "Permitir" cuando Safari lo pregunte.
+   Si no aparece el permiso: Ajustes > Privacidad y seguridad >
+   Servicios de ubicacion > activarlos y, dentro de Safari, marcar "Precisa".
+3. Para tenerlo como una app: boton "Compartir" -> "Anadir a la pantalla
+   de inicio". Asi se abre siempre en HTTPS.
+4. Pantalla siempre activa: Safari en iOS no permite Wake Lock. Si se
+   apaga la pantalla, Ajustes > Pantalla y brillo > Bloqueo automatico >
+   Nunca.
+5. Si ves una version antigua, cierra la pestaña y vuelve a abrir el enlace.
+
+3) EN ANDROID
+-------------
+1. Abre la misma URL HTTPS del visor en Chrome.
+2. Pulsa "Activar GPS" y acepta "Permitir".
+3. Para instalarlo: menu de Chrome (tres puntos) -> "Anadir a pantalla
+   de inicio" o "Instalar app".
+
+4) FUNCIONES
+------------
+- Unica caja de busqueda: carretera, poblacion o via + PK (CC-420 10+150).
+  Sin boton ni panel de Referencial aparte.
+- Fondos IGN: topografico, mapa base, ortofoto PNOA y sin fondo.
+- Medir distancias desde un punto elegido: tramos y total.
+- Etiquetas PK con toggle y etiquetas de carreteras por zoom con toggle.
+- Color y grosor de carreteras; ficha con km en negrita / metros y coordenadas.
+- Referencial/LRS (solo se mueve sobre la traza), coordenadas WGS84/UTM con
+  modos Pantalla y GPS, y Pantalla siempre activa.
+- El marcador de ubicacion/GPS es una flecha roja con contorno verde que
+   gira con el rumbo, para no confundirla con los puntos de poblacion.
