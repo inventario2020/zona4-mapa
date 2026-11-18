@@ -702,7 +702,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
 .leaflet-popup-content .desc{color:#64748b;margin-bottom:6px;max-width:210px}
 .big{font-size:19px;font-weight:700;color:#0f172a;font-variant-numeric:tabular-nums}
 .big small{font-size:11px;font-weight:400;color:#64748b}
-.roadlen{font-size:12px;line-height:1.45;color:#0f172a;font-variant-numeric:tabular-nums}
+.fco{margin-top:6px;padding-top:5px;border-top:1px solid #e5e7eb;font-size:11px;line-height:1.45;color:#374151}.fco b{color:#111827}.roadlen{font-size:12px;line-height:1.45;color:#0f172a;font-variant-numeric:tabular-nums}
 .roadlen b{font-weight:700}
 .roadlen span{color:#64748b}
 .leaflet-control-attribution{font-size:9px!important;background:#ffffffcc!important}
@@ -877,11 +877,17 @@ function labelPositions(pts,spacing,maxN){
  }
  return out;
 }
+function coordHTML(lat,lng){
+  const z=utmZone(lng), uv=toUTM(lat,lng,z);
+  return '<div class="fco"><b>WGS84</b> '+lat.toFixed(6)+', '+lng.toFixed(6)+
+         '<br><b>ETRS89 / UTM '+z+'N (H'+z+')</b> E '+uv[0].toFixed(2)+'  N '+uv[1].toFixed(2)+'</div>';
+}
 D.roads.forEach((r,i)=>{
  const casing=L.polyline(r[3],{color:'#ffffff',weight:roadWeight+4,opacity:.95,lineCap:'round',interactive:false});
  const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round'});
- line.bindPopup('<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b><br><span>'+fmt(r[2])+' m</span></div>');
- line.on('click',e=>{select(i);if(refOn){lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);}});
+ const roadHTML=()=>'<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b> / <span>'+fmt(r[2])+' m</span></div>';
+ line.bindPopup(roadHTML()+coordHTML(r[3][0][0],r[3][0][1]));
+ line.on('click',e=>{select(i);line.setPopupContent(roadHTML()+coordHTML(e.latlng.lat,e.latlng.lng));if(refOn){lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);}});
  roadGroup.addLayer(casing).addLayer(line); RL.push(line); CASING.push(casing);
  /* etiquetas ordenadas desde el centro de la via: de lejos solo la central,
     y se van mostrando mas conforme aumenta el zoom */

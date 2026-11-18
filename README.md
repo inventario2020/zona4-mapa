@@ -96,7 +96,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Siguiendo / Seguir | Reactiva el seguimiento si has arrastrado el mapa |
 | Pulsar en el mapa | Muestra **Coordenadas del punto**: WGS84 (lat/lon) y ETRS89 UTM (Este/Norte en metros), con botón **Copiar**. El huso se calcula según la longitud: **30N** en la Zona 4 y **29N** si entra una carretera más al oeste |
 
-Al tocar una carretera ves su longitud en **km** (en negrita) y justo debajo en **m**, ambos con el mismo tamaño. Al tocar un PK ves su número (sin cota).
+Al tocar una carretera ves su longitud en **km** (en negrita), seguida de `/` y los **m** en la misma línea, ambos con el mismo tamaño; la ficha incluye además WGS84 y ETRS89/UTM (huso automático). Al tocar un PK ves su número (sin cota).
 
 También hay una copia ligera (`Mapa_Zona4.html` en la carpeta principal) que
 funciona sin internet, y un resumen para ordenador y móvil en `INSTRUCCIONES.txt`.
