@@ -804,12 +804,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
   <li>Pulsa en cualquier punto del mapa: panel con <b>WGS84</b> (lat/lon) y <b>ETRS89 UTM</b> (Este/Norte). El huso se calcula solo: <b>30N</b> en la Zona 4 y <b>29N</b> si entra una carretera más al oeste. Botón Copiar.</li>
    <li><b>Referencial</b>: recuadro azul con Vía: y PK: real (p. ej. 1+158 m). Al tocar el mapa se coloca en ese punto; con GPS activo sigue tu posición. Un clic manual manda durante 20 s.</li>
    <li><b>Pantalla siempre activa: OFF/ON</b> evita que el móvil apague la pantalla (Wake Lock).</li>
-   <li>Trazas reconstruidas desde el SHP con precisión submétrica (0,54 m máximo). La <b>CC-429</b> es la única que difiere de la ortofoto: su trazado real cambió.</li></ol>
-  <h3>Instalar en GitHub Pages</h3>
-  <ol><li>Crea un repositorio <b>público</b> (ej. <code>zona4-mapa</code>).</li>
-  <li>Sube los 3 archivos de <code>GitHub Pages\Zona4</code>: <code>index.html</code>, <code>README.md</code> y <code>.nojekyll</code>.</li>
-  <li>Settings → Pages → Source: <b>Deploy from a branch</b>, rama <b>main</b>, carpeta <b>/(root)</b> → Save.</li>
-  <li>Espera 1-2 min y abre <code>https://TU-USUARIO.github.io/zona4-mapa/</code> (con la barra final).</li></ol>
+   </ol>
   <h3>En el iPhone</h3>
   <ol><li>Abre Safari y pega la URL <code>https://...</code> (nunca http://).</li>
   <li>Pulsa <b>Activar GPS</b> → <b>Permitir</b>.</li>
@@ -819,7 +814,6 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
   <li>Pulsa <b>Activar GPS</b> → <b>Permitir</b> (también puedes ir a Ajustes → Apps → Chrome → Permisos → Ubicación).</li>
   <li>Menú de Chrome (⋮) → <b>Añadir a pantalla de inicio</b> o <b>Instalar app</b>.</li>
   <li>Si no sale el permiso: activa la ubicación del móvil y en Chrome elige <b>Solo mientras usas la app</b> o <b>Preguntar cada vez</b>.</li></ol>
-  <div class="aviso"><b>Importante:</b> el GPS del móvil (iPhone y Android) solo funciona con la URL HTTPS de GitHub Pages. Desde un archivo local no permite la ubicación. Para actualizar el mapa, sustituye <code>index.html</code> en el repositorio y haz Commit changes.</div>
  </div>
 </div>
 </div>
@@ -1140,18 +1134,26 @@ const gps=$('gpsInfo'), bGps=$('bGps'), bFollow=$('bFollow');
 function gpsText(t){gps.style.display='block';gps.innerHTML=t;}
 function onPos(p){
  const c=p.coords, lat=c.latitude, lng=c.longitude, m=Math.round(c.accuracy||0);
+ const heading=c.heading==null?0:c.heading;
+ const arrow=L.divIcon({className:'gps-arrow',iconSize:[26,32],iconAnchor:[13,26],html:
+  '<svg width="26" height="32" viewBox="0 0 26 32" xmlns="http://www.w3.org/2000/svg">'+
+  '<path d="M13 1 L24 30 L13 24 L2 30 Z" fill="#dc2626" stroke="#16a34a" stroke-width="2.5" stroke-linejoin="round"/>'+
+  '<path d="M13 5 L20 26 L13 21 L6 26 Z" fill="#ef4444"/></svg>'});
+ const rot=()=>{if(me&&me._icon)me._icon.style.transform='rotate('+heading+'deg)';};
  if(!me){
-  circle=L.circle([lat,lng],{radius:Math.max(m,1),color:'#1d4ed8',weight:1,fillColor:'#3b82f6',fillOpacity:.14,interactive:false}).addTo(map);
-  me=L.circleMarker([lat,lng],{radius:7,color:'#ffffff',weight:3,fillColor:'#2563eb',fillOpacity:1}).addTo(map);
+  circle=L.circle([lat,lng],{radius:Math.max(m,1),color:'#16a34a',weight:1,fillColor:'#22c55e',fillOpacity:.12,interactive:false}).addTo(map);
+  me=L.marker([lat,lng],{icon:arrow,zIndexOffset:1000,interactive:true}).addTo(map);
   me.bindPopup('Mi ubicación');
+  me.on('add',rot); rot();
   if(following)map.flyTo([lat,lng],Math.max(map.getZoom(),15),{duration:.8});
  }else{
   me.setLatLng([lat,lng]); circle.setLatLng([lat,lng]).setRadius(Math.max(m,1));
+  if(c.heading!=null){me.options.icon=arrow;rot();}
   if(following)map.panTo([lat,lng]);
  }
  const spd=c.speed==null?'—':(c.speed*3.6).toFixed(1)+' km/h';
  const rumbo=c.heading==null?'—':Math.round(c.heading)+'°';
- gpsText('<b style="color:#1d4ed8">● Ubicación activa</b><br>Precisión ±'+m+' m · Velocidad '+spd+'<br>Rumbo '+rumbo+' · '+new Date(p.timestamp).toLocaleTimeString('es-ES'));
+ gpsText('<b style="color:#dc2626">▲ Ubicación activa</b><br>Precisión ±'+m+' m · Velocidad '+spd+'<br>Rumbo '+rumbo+' · '+new Date(p.timestamp).toLocaleTimeString('es-ES'));
  updateLRS(L.latLng(lat,lng),m,true);
  if(coordOn&&coordSrc==='gps'&&!coordClosed)showCoords(L.latLng(lat,lng));
 }
