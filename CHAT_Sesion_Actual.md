@@ -130,7 +130,7 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 - El texto de la caja dice literalmente **«Búsqueda por carretera, población o por PK de Referencial»**, sin botón ni panel aparte. La vista inicial queda vacía de nombres de vía: el placeholder no muestra ningún ejemplo de carretera.
 - En el panel del GPS, la etiqueta «Ubicación activa» se reduce a **«Precisión ±X m»**; se eliminan velocidad, rumbo y hora.
 - Al pinchar el punto azul del Referencial o el marcador rojo del PK buscado se muestra el dato del Referencial (vía y PK exactos) sin alterar el panel; la ficha de carretera con la longitud sigue abriéndose al pinchar la vía, con o sin Referencial activado.
-- **Con Referencial activado**, al pinchar sobre una vía o sobre un punto del Referencial se abre solo una etiqueta pequeña con reborde azul (`CC-101 PK 1+011`) y las coordenadas WGS84/ETRS89-UTM del punto; NO se muestra la ficha con `LONGITUD`, `DENOMINAC` ni otros datos de carretera. Con el Referencial desactivado, al pinchar la vía se abre la ficha completa con la longitud, como antes.
+- **Con Referencial activado**, al pinchar sobre una vía o sobre un punto del Referencial se abre solo una etiqueta pequeña con **fondo azul y letras blancas, sin reborde**, con el formato `CC-101    PK: 3+532` (clave, cuatro espacios, `PK:` y el PK sin sufijo `m`) y las coordenadas WGS84/ETRS89-UTM del punto; NO se muestra la ficha con `LONGITUD`, `DENOMINAC` ni otros datos de carretera. Con el Referencial desactivado, al pinchar la vía se abre la ficha completa con la longitud, como antes.
 - Verificado sin errores JS en los 4 visores (2 completos + 2 ligeros): marcadores `40.21064,-6.84240` y `39.44641,-5.64087`, zoom 16; la búsqueda de carreteras y poblaciones sigue intacta.
 - Actualizados `INSTRUCCIONES.txt` (Zona 1, Zona 4 y copias de staging/canónico), los README de Pages y el generador `package_zona1.py`.
 
@@ -138,9 +138,9 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 
 | Repositorio | Archivo | MD5 |
 |---|---|---|
-| `zona1-mapa` | `index.html` | `8E46B86A0CAF8F836278634880A2C2B0` |
+| `zona1-mapa` | `index.html` | `0CFEF27BA6AA0EC44CF32744F37D12C3` |
 | `zona1-mapa` | `README.md` | `FB9A275828CC5002A443E98A162DBD4B` |
-| `zona4-mapa` | `index.html` | `2BD5C586E9FCE0EA7396B8383FA19D23` |
+| `zona4-mapa` | `index.html` | `BFA6AEB6AC487DBE6E7A8441F7CC083D` |
 | `zona4-mapa` | `README.md` | `C75AD1159D241DF07895E77CEF3B9E27` |
 
 Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py`; no se incluye su propio hash para evitar una autorreferencia.
@@ -150,3 +150,4 @@ Commit de este ajuste en ambos repositorios: `Búsqueda inicial vacía: sin ejem
 Commit de este ajuste en ambos repositorios: `Búsqueda inicial vacía y etiqueta GPS reducida a precisión`.
 Commit de este ajuste en ambos repositorios: `Clic en puntos del Referencial muestra vía y PK exactos`.
 Commit de este ajuste en ambos repositorios: `Referencial activo: etiqueta PK pequeña con coordenadas y sin ficha de carretera`.
+Commit de este ajuste en ambos repositorios: `Etiqueta Referencial con fondo azul, letras blancas y PK separado`.

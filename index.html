@@ -671,8 +671,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #lrsInfo .pk{font-weight:800;color:#fff}
 #lrsInfo .small{color:#dbeafe}
 #lrsInfo button{margin-top:3px;padding:1px 5px;font-size:9px;color:#3d42c8;background:#fff;border:0;border-radius:3px}
-#lrsInfo .pkmini{background:#fff;color:#1d4ed8;border:1px solid #1d4ed8;border-radius:3px;padding:1px 5px;font-size:10px;font-weight:800;display:inline-block;font-variant-numeric:tabular-nums}
-.leaflet-popup-content-wrapper .pkmini{background:#fff;color:#1d4ed8;border:1px solid #1d4ed8;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:3px;font-variant-numeric:tabular-nums}
+#lrsInfo .pkmini{background:#1d4ed8;color:#fff;border:0;border-radius:3px;padding:2px 6px;font-size:10px;font-weight:800;display:inline-block;font-variant-numeric:tabular-nums}
+.leaflet-popup-content-wrapper .pkmini{background:#1d4ed8;color:#fff;border:0;border-radius:3px;padding:2px 6px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:3px;font-variant-numeric:tabular-nums}
 .leaflet-popup-content{margin:6px 9px;font-size:11px;line-height:1.3}
 </style>
 <style>
@@ -890,7 +890,7 @@ D.roads.forEach((r,i)=>{
  const casing=L.polyline(r[3],{color:'#ffffff',weight:roadWeight+4,opacity:.95,lineCap:'round',interactive:false});
  const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round',bubblingMouseEvents:false});
  const roadHTML=()=>'<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b> / <span>'+fmt(r[2])+' m</span></div>';
- const pkMiniHTML=pk=>'<div class="pkmini">'+esc(r[0])+' PK '+miniPK(pk)+'</div>';
+ const pkMiniHTML=pk=>'<div class="pkmini">'+esc(r[0])+'&nbsp;&nbsp;&nbsp;&nbsp;PK: '+miniPK(pk)+'</div>';
  line.bindPopup(roadHTML()+coordHTML(r[3][0][0],r[3][0][1]));
  line.on('click',e=>{
    select(i);
@@ -1302,7 +1302,7 @@ function updateLRS(ll,gpsAcc,fromGps,fromMapClick,fromRoadClick){
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,bubblingMouseEvents:false}).addTo(map);
- lrsMarker.bindPopup(()=>'<div class="pkmini">'+esc(e.code)+' PK '+miniPK($('lrsPk').textContent)+'</div>'+coordHTML(e.snap.lat,e.snap.lng));
+ lrsMarker.bindPopup(()=>'<div class="pkmini">'+esc(e.code)+'&nbsp;&nbsp;&nbsp;&nbsp;PK: '+miniPK($('lrsPk').textContent)+'</div>'+coordHTML(e.snap.lat,e.snap.lng));
  if(fromRoadClick||fromMapClick)lrsMarker.openPopup();
  lrsLast=e; lrsLastLL=ll; lrsLastFromGps=!!fromGps;
 }
@@ -1347,7 +1347,7 @@ function goRef(r,pk){
  $('lrsPk').textContent=fmtPK(r.pk);
  if(refSearchMarker)map.removeLayer(refSearchMarker);
  refSearchMarker=L.circleMarker(r.ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#dc2626',fillOpacity:1,zIndexOffset:1200,bubblingMouseEvents:false}).addTo(map);
- refSearchMarker.bindPopup('<div class="pkmini">'+esc(r.code)+' PK '+miniPK(fmtPK(pk))+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
+ refSearchMarker.bindPopup('<div class="pkmini">'+esc(r.code)+'&nbsp;&nbsp;&nbsp;&nbsp;PK: '+miniPK(fmtPK(pk))+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
  map.setView(r.ll,16,{animate:false});
  refSearchMarker.openPopup();
 }
