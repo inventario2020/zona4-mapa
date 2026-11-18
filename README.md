@@ -2,8 +2,13 @@
 
 Esta carpeta contiene el visor listo para publicar:
 
-- `index.html` — el mapa completo (carreteras, PK, fondos del IGN y GPS).
+- `index.html` — el mapa completo (carreteras, PK, fondos del IGN, GPS, Referencial/LRS, Wake Lock y coordenadas WGS84/UTM).
 - `.nojekyll` — evita que GitHub procese los archivos con Jekyll.
+
+> **Trazas corregidas (18/11/2026):** reconstruidas desde los SHP con tolerancia de 0,5 m
+> (antes 30 m, que daba trazas rectas desplazadas). 11.904 vértices, desviación máxima 0,54 m.
+> La **CC-429** es la única que difiere de la ortofoto porque su trazado real cambió; el SHP
+> procede de mapping mobile y recoge esa modificación. El Referencial se recalibra solo.
 
 GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
 
@@ -46,7 +51,7 @@ El propio mapa lleva un botón **Instrucciones** en la barra superior con este r
 ## Usarlo en el iPhone
 
 1. Abre **Safari** y pega la URL `https://...` (nunca `http://`).
-2. Pulsa **Mi ubicación** y acepta **Permitir** cuando Safari pregunte por la ubicación.
+2. Pulsa **Activar GPS** y acepta **Permitir** cuando Safari pregunte por la ubicación.
 3. Para tenerlo como app: botón **Compartir → Añadir a la pantalla de inicio**. Así se abre siempre en HTTPS y el GPS sigue funcionando.
 
 Si no sale el permiso:
@@ -58,7 +63,7 @@ Si no sale el permiso:
 ## Usarlo en Android
 
 1. Abre **Chrome** y pega la misma URL `https://...` (nunca `http://`).
-2. Pulsa **Mi ubicación** y acepta **Permitir**.
+2. Pulsa **Activar GPS** y acepta **Permitir**.
 3. Para instalarlo: menú de Chrome (**⋮**) → **Añadir a pantalla de inicio** o **Instalar app**. Se abre como una app y siempre usa HTTPS.
 4. Si no sale el permiso:
    - Activa la ubicación del móvil en **Ajustes → Ubicación**.
@@ -77,6 +82,9 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Poblaciones | Muestra u oculta los 103 núcleos del IGN (punto azul y etiqueta blanca con borde rojo y texto negro; nombre, habitantes y altitud) |
 | Selector de color | Elige el color de las carreteras |
 | Selector de grosor | Elige la anchura de las carreteras: **Fino, Medio, Normal, Grueso o Muy grueso** (la carretera seleccionada se resalta) |
+| Coordenadas | Muestra/oculta el panel con WGS84 y ETRS89/UTM (huso automático 30N/29N). Dentro tiene dos modos: **Pantalla** (sigue el ratón) y **GPS** (sigue tu ubicación), además de **Copiar** y **Cerrar** |
+| Referencial | Recuadro azul con **Vía:** y **PK:** real (p. ej. `1+158 m`). Se coloca donde toques el mapa; con GPS activo sigue tu posición. Un clic manual tiene prioridad durante 20 s |
+| Pantalla siempre activa: OFF/ON | Wake Lock: evita que el móvil apague la pantalla. Si el navegador no lo soporta, muestra aviso con instrucciones para iPhone/iPad |
 | Etiquetas carreteras | Muestra u oculta `CC-420`, `CC-432`... (fondo blanco y texto negro; de lejos una por vía y más al acercar) |
 | Etiquetas PK | Muestra u oculta `PK-1`, `PK-2`... (fondo amarillo, visibles desde zoom 13) |
 | Ver todo | Vuelve a encuadrar la Zona 4 |
@@ -84,7 +92,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Buscar (caja única) | Carreteras y poblaciones juntas. Escribe `CC-432`, `Trujillo` o `Navezuelas`: si hay una sola coincidencia va directo; si hay varias (p. ej. `Trujillo`) elige en la lista **Carretera** (→ `CC-330`) o **Población** (→ el pueblo). Flechas y Enter también funcionan |
 | Medir distancias | Pulsa el botón, haz clic en el punto de partida y luego en cada punto: muestra el último tramo y la distancia **TOTAL** acumulada |
 | Terminar / Borrar | Termina la medición / borra los puntos (panel "Medición") |
-| Mi ubicación | Activa el GPS; punto azul + círculo de precisión |
+| Activar GPS / Desactivar GPS | Activa el GPS; punto azul + círculo de precisión. Con GPS activo, el Referencial calcula el PK de tu vía |
 | Siguiendo / Seguir | Reactiva el seguimiento si has arrastrado el mapa |
 | Pulsar en el mapa | Muestra **Coordenadas del punto**: WGS84 (lat/lon) y ETRS89 UTM (Este/Norte en metros), con botón **Copiar**. El huso se calcula según la longitud: **30N** en la Zona 4 y **29N** si entra una carretera más al oeste |
 
