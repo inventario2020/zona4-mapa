@@ -1287,7 +1287,8 @@ function updateLRS(ll,gpsAcc,fromGps,fromMapClick){
  $('lrsPk').textContent=fmtPK(e.pk);
  panel.style.display='block';
  if(lrsMarker)map.removeLayer(lrsMarker);
- lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
+ lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,bubblingMouseEvents:false}).addTo(map);
+ lrsMarker.bindPopup(()=>'<h3>'+esc($('lrsRoad').textContent)+'</h3><div class="desc">Referencial · PK '+$('lrsPk').textContent+'</div>'+coordHTML(e.snap.lat,e.snap.lng));
  lrsLast=e; lrsLastLL=ll; lrsLastFromGps=!!fromGps;
 }
 map.on('click',e=>{updateLRS(e.latlng,0,false,true);});
@@ -1329,8 +1330,8 @@ function goRef(r,pk){
  $('lrsRoad').textContent=r.name;
  $('lrsPk').textContent=fmtPK(r.pk);
  if(refSearchMarker)map.removeLayer(refSearchMarker);
- refSearchMarker=L.circleMarker(r.ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#dc2626',fillOpacity:1,zIndexOffset:1200}).addTo(map);
- refSearchMarker.bindPopup('<h3>'+esc(r.code)+' · PK '+fmtPK(r.pk)+'</h3><div class="desc">'+esc(r.name)+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
+ refSearchMarker=L.circleMarker(r.ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#dc2626',fillOpacity:1,zIndexOffset:1200,bubblingMouseEvents:false}).addTo(map);
+ refSearchMarker.bindPopup('<h3>'+esc(r.code)+'</h3><div class="desc">Referencial · PK '+fmtPK(pk)+'</div><div>'+esc(r.name)+'</div>'+coordHTML(r.ll.lat,r.ll.lng));
  map.setView(r.ll,16,{animate:false});
  refSearchMarker.openPopup();
 }

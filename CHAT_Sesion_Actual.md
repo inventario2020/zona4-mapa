@@ -129,6 +129,7 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 - **CC-432** ya no aparece como ejemplo en el buscador ni en las ayudas de Zona 4; sigue existiendo como carretera real en los datos.
 - El texto de la caja dice literalmente **«Búsqueda por carretera, población o por PK de Referencial»**, sin botón ni panel aparte. La vista inicial queda vacía de nombres de vía: el placeholder no muestra ningún ejemplo de carretera.
 - En el panel del GPS, la etiqueta «Ubicación activa» se reduce a **«Precisión ±X m»**; se eliminan velocidad, rumbo y hora.
+- Al pinchar el punto azul del Referencial o el marcador rojo del PK buscado se muestra el dato del Referencial (vía y PK exactos) sin alterar el panel; la ficha de carretera con la longitud sigue abriéndose al pinchar la vía, con o sin Referencial activado.
 - Verificado sin errores JS en los 4 visores (2 completos + 2 ligeros): marcadores `40.21064,-6.84240` y `39.44641,-5.64087`, zoom 16; la búsqueda de carreteras y poblaciones sigue intacta.
 - Actualizados `INSTRUCCIONES.txt` (Zona 1, Zona 4 y copias de staging/canónico), los README de Pages y el generador `package_zona1.py`.
 
@@ -136,9 +137,9 @@ Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial m
 
 | Repositorio | Archivo | MD5 |
 |---|---|---|
-| `zona1-mapa` | `index.html` | `7C2F4B53E0D51E683EE1BA47167652C0` |
+| `zona1-mapa` | `index.html` | `AF3261F5A5756A356CC9123DD0E84AB1` |
 | `zona1-mapa` | `README.md` | `FB9A275828CC5002A443E98A162DBD4B` |
-| `zona4-mapa` | `index.html` | `B7ACDCA8D4B65A423ECBE6B1DC7E0449` |
+| `zona4-mapa` | `index.html` | `9D558DF19699780661CDCF32335B7EAF` |
 | `zona4-mapa` | `README.md` | `C75AD1159D241DF07895E77CEF3B9E27` |
 
 Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py`; no se incluye su propio hash para evitar una autorreferencia.
@@ -146,3 +147,4 @@ Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py
 Commit de esta fase en ambos repositorios: `Buscador único: Búsqueda por Referencial integrada y sin CC-432 en Zona 4`.
 Commit de este ajuste en ambos repositorios: `Búsqueda inicial vacía: sin ejemplos de carretera en el placeholder`.
 Commit de este ajuste en ambos repositorios: `Búsqueda inicial vacía y etiqueta GPS reducida a precisión`.
+Commit de este ajuste en ambos repositorios: `Clic en puntos del Referencial muestra vía y PK exactos`.
