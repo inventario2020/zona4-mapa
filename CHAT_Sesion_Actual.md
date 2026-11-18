@@ -95,7 +95,7 @@ Si una pestaña antigua sigue mostrando el comportamiento anterior, es caché de
 
 ---
 
-## 7. Pestaña «Búsqueda por Referencial» (última modificación)
+## 7. Pestaña «Búsqueda por Referencial» (fase anterior, sustituida por la 8)
 
 - Botón de acento rojo **Búsqueda por Referencial** añadido a los 8 visores: los 6 completos/exportables y las 2 versiones ligeras.
 - Permite introducir una carretera y su PK en varios formatos: `10+150`, `10150` o `10.150`. Ejemplos: Zona 4 `CC-420` + `10+150`; Zona 1 `CC-102` + `2+522`.
@@ -116,3 +116,29 @@ Si una pestaña antigua sigue mostrando el comportamiento anterior, es caché de
 
 Commit de esta fase en ambos repositorios: `Búsqueda por Referencial: ir a una vía por su PK y resaltarlo en rojo`.
 Commit del retoque en ambos repositorios: `Botón de Búsqueda por Referencial más pequeño, estilo etiqueta`.
+
+
+---
+
+## 8. Buscador único: Referencial integrado (última modificación)
+
+- Eliminados el botón/pestaña **Búsqueda por Referencial**, el panel `#refSearchPanel` y sus controles (`rsRoad`, `rsPk`, `rsGo`, `rsMsg`) de los 8 visores: el mapa queda limpio.
+- La búsqueda por PK se hace ahora en la **única caja de búsqueda** de carreteras y localidades: `CC-102 2+522`, `CC-102 2522` o `CC-102 2.522` en Zona 1; `CC-420 10+150`, `CC-420 10150` o `CC-420 10.150` en Zona 4.
+- `parseRefQuery()` detecta «vía + PK», `findResults()` añade el resultado `PK` y `goRes()` llama a `goRef()`. El resultado se enumera en el desplegable con etiqueta roja y se centra con `map.setView(...,16,{animate:false})`, válido también en pestañas de segundo plano.
+- Se resaltan en rojo la vía y el punto, y el panel del Referencial muestra exactamente el PK pedido (`2+522 m` / `10+150 m`). Las vías inexistentes y los PK fuera de rango se avisan en el propio desplegable (o en `#infoBody` en las versiones ligeras), sin ocultar el aviso.
+- **CC-432** ya no aparece como ejemplo en el buscador ni en las ayudas de Zona 4; sigue existiendo como carretera real en los datos.
+- Verificado sin errores JS en los 4 visores (2 completos + 2 ligeros): marcadores `40.21064,-6.84240` y `39.44641,-5.64087`, zoom 16; la búsqueda de carreteras y poblaciones sigue intacta.
+- Actualizados `INSTRUCCIONES.txt` (Zona 1, Zona 4 y copias de staging/canónico), los README de Pages y el generador `package_zona1.py`.
+
+**Hashes vigentes tras este cambio** (los de la sección 7 quedan sustituidos por estos):
+
+| Repositorio | Archivo | MD5 |
+|---|---|---|
+| `zona1-mapa` | `index.html` | `02563BB45C9118A9FD9CF9E0E9C76D28` |
+| `zona1-mapa` | `README.md` | `FB9A275828CC5002A443E98A162DBD4B` |
+| `zona4-mapa` | `index.html` | `D83743524A365F7FC9F4F5CAED4ED95C` |
+| `zona4-mapa` | `README.md` | `C75AD1159D241DF07895E77CEF3B9E27` |
+
+Los dos `CHAT_Sesion_Actual.md` se comprueban byte a byte con `verify_remote3.py`; no se incluye su propio hash para evitar una autorreferencia.
+
+Commit de esta fase en ambos repositorios: `Buscador único: Búsqueda por Referencial integrada y sin CC-432 en Zona 4`.

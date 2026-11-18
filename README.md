@@ -12,7 +12,7 @@ Esta carpeta contiene el visor listo para publicar:
 
 El **Referencial/LRS** solo se actualiza al tocar la traza de la carretera (30 m): si haces clic fuera se conserva el último PK mientras buscas coordenadas. Con el GPS activo sigue tu posición.
 
-El botón rojo **Búsqueda por Referencial** permite escribir una vía y su PK (p. ej. `CC-420` y `10+150` o `10150`): el mapa se centra en ese punto y resalta la carretera y el PK en rojo.
+La **Búsqueda por Referencial** está integrada en la **única caja de búsqueda** (la misma de carreteras y poblaciones): escribe la vía y su PK juntos, p. ej. `CC-420 10+150` o `CC-420 10150` (también `CC-420 10.150`). No hay botón ni panel aparte: el mapa se centra en ese punto (zoom 16) y resalta la carretera y el PK en rojo.
 
 GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
 
@@ -93,7 +93,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Etiquetas PK | Muestra u oculta `PK-1`, `PK-2`... (fondo amarillo, visibles desde zoom 13) |
 | Ver todo | Vuelve a encuadrar la Zona 4 |
 | Instrucciones | Abre en pantalla el resumen para ordenador, GitHub e iPhone |
-| Buscar (caja única) | Carreteras y poblaciones juntas. Escribe `CC-432`, `Trujillo` o `Navezuelas`: si hay una sola coincidencia va directo; si hay varias (p. ej. `Trujillo`) elige en la lista **Carretera** (→ `CC-330`) o **Población** (→ el pueblo). Flechas y Enter también funcionan |
+| Buscar (caja única) | Carreteras, PK y poblaciones juntos. Escribe `CC-420 10+150`, `CC-420`, `Trujillo` o `Navezuelas`: con vía + PK va directo al punto (zoom 16) y lo resalta en rojo; con una sola coincidencia va directo; si hay varias (p. ej. `Trujillo`) elige en la lista **Carretera** (→ `CC-330`) o **Población** (→ el pueblo). Flechas y Enter también funcionan |
 | Medir distancias | Pulsa el botón, haz clic en el punto de partida y luego en cada punto: muestra el último tramo y la distancia **TOTAL** acumulada |
 | Terminar / Borrar | Termina la medición / borra los puntos (panel "Medición") |
 | Activar GPS / Desactivar GPS | Activa el GPS; punto azul + círculo de precisión. Con GPS activo, el Referencial calcula el PK de tu vía |
