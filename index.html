@@ -802,7 +802,7 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
   <li>“Medir distancias”: clic en el inicio y en cada punto; muestra tramos y total.</li>
    <li>El <b>cuadradito de color</b> cambia el color y el <b>desplegable de grosor</b> (Fino, Medio, Normal, Grueso, Muy grueso) cambia la anchura de las carreteras; la seleccionada se resalta.</li>
   <li>Pulsa en cualquier punto del mapa: panel con <b>WGS84</b> (lat/lon) y <b>ETRS89 UTM</b> (Este/Norte). El huso se calcula solo: <b>30N</b> en la Zona 4 y <b>29N</b> si entra una carretera más al oeste. Botón Copiar.</li>
-   <li><b>Referencial</b>: recuadro azul con Vía: y PK: real (p. ej. 1+158 m). Al tocar el mapa se coloca en ese punto; con GPS activo sigue tu posición. Un clic manual manda durante 20 s.</li>
+   <li><b>Referencial</b>: recuadro azul con Vía: y PK: real (p. ej. 1+158 m). Solo se actualiza al tocar la traza de la carretera (30 m); si tocas fuera conserva el último PK mientras buscas coordenadas. Con GPS activo sigue tu posición. Un clic manual manda durante 20 s.</li>
    <li><b>Pantalla siempre activa: OFF/ON</b> evita que el móvil apague la pantalla (Wake Lock).</li>
    </ol>
   <h3>En el iPhone</h3>
@@ -1233,11 +1233,14 @@ const LRS=(()=>{
 let lrsMarker=null,lrsLast=null;
 function fmtPK(pk){const m=Math.round(pk*1000);return Math.floor(m/1000)+'+'+String(m%1000).padStart(3,'0')+' m';}
 let refOn=true, lrsLastLL=null, lrsManualUntil=0, lrsLastFromGps=false;
-function updateLRS(ll,gpsAcc,fromGps){
+const LRS_TOL_M=30; /* el referencial solo sigue el cursor dentro de la traza */
+function updateLRS(ll,gpsAcc,fromGps,fromMapClick){
  if(fromGps&&Date.now()<lrsManualUntil)return;
  const e=LRS.estimate(ll,sel>=0?D.roads[sel][0]:null),panel=$('lrsInfo');
  if(!refOn){panel.style.display='none';if(lrsMarker){map.removeLayer(lrsMarker);lrsMarker=null;}return;}
+ if(fromMapClick&&(!e||e.off>LRS_TOL_M))return; /* fuera de via: conservar ultimo PK */
  if(!e){panel.style.display='none';return;}
+ if(fromMapClick)lrsManualUntil=Date.now()+20000;
  $('lrsRoad').textContent=e.name;
  $('lrsPk').textContent=fmtPK(e.pk);
  panel.style.display='block';
@@ -1245,7 +1248,7 @@ function updateLRS(ll,gpsAcc,fromGps){
  lrsMarker=L.circleMarker(e.snap,{radius:4,color:'#3d42c8',weight:2,fillColor:'#ffffff',fillOpacity:1,interactive:false}).addTo(map);
  lrsLast=e; lrsLastLL=ll; lrsLastFromGps=!!fromGps;
 }
-map.on('click',e=>{lrsManualUntil=Date.now()+20000;updateLRS(e.latlng);});
+map.on('click',e=>{updateLRS(e.latlng,0,false,true);});
 
 $('bRef').onclick=()=>{
  refOn=!refOn;

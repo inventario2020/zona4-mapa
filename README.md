@@ -10,6 +10,8 @@ Esta carpeta contiene el visor listo para publicar:
 > La **CC-429** es la única que difiere de la ortofoto porque su trazado real cambió; el SHP
 > procede de mapping mobile y recoge esa modificación. El Referencial se recalibra solo.
 
+El **Referencial/LRS** solo se actualiza al tocar la traza de la carretera (30 m): si haces clic fuera se conserva el último PK mientras buscas coordenadas. Con el GPS activo sigue tu posición.
+
 GitHub Pages da **HTTPS gratis**, que es obligatorio para que el GPS funcione en el iPhone.
 
 El propio mapa lleva un botón **Instrucciones** en la barra superior con este resumen (PC, GitHub e iPhone).
@@ -83,7 +85,7 @@ Al igual que en el iPhone, el GPS solo funciona con la URL HTTPS de GitHub Pages
 | Selector de color | Elige el color de las carreteras |
 | Selector de grosor | Elige la anchura de las carreteras: **Fino, Medio, Normal, Grueso o Muy grueso** (la carretera seleccionada se resalta) |
 | Coordenadas | Muestra/oculta el panel con WGS84 y ETRS89/UTM (huso automático 30N/29N). Dentro tiene dos modos: **Pantalla** (sigue el ratón) y **GPS** (sigue tu ubicación), además de **Copiar** y **Cerrar** |
-| Referencial | Recuadro azul con **Vía:** y **PK:** real (p. ej. `1+158 m`). Se coloca donde toques el mapa; con GPS activo sigue tu posición. Un clic manual tiene prioridad durante 20 s |
+| Referencial | Recuadro azul con **Vía:** y **PK:** real (p. ej. `1+158 m`). Solo se actualiza al tocar la traza (30 m); si tocas fuera conserva el último PK. Con GPS activo sigue tu posición. Un clic manual tiene prioridad durante 20 s |
 | Pantalla siempre activa: OFF/ON | Wake Lock: evita que el móvil apague la pantalla. Si el navegador no lo soporta, muestra aviso con instrucciones para iPhone/iPad |
 | Etiquetas carreteras | Muestra u oculta `CC-420`, `CC-432`... (fondo blanco y texto negro; de lejos una por vía y más al acercar) |
 | Etiquetas PK | Muestra u oculta `PK-1`, `PK-2`... (fondo amarillo, visibles desde zoom 13) |
