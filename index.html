@@ -703,6 +703,9 @@ button.on{background:#0d9488;border-color:#0d9488;color:#fff}
 .leaflet-popup-content{margin:8px 10px;font-size:12px;line-height:1.35}
 .leaflet-popup-content h3{margin:0 0 3px;font-size:13px}
 .leaflet-popup-content .desc{color:#64748b;margin-bottom:6px;max-width:210px}
+.leaflet-popup-content .svbtn{margin-top:7px}
+.leaflet-popup-content .svbtn a{display:inline-block;background:#1d4ed8;color:#fff;border-radius:4px;padding:5px 9px;font-size:11px;font-weight:800;text-decoration:none}
+.leaflet-popup-content .svbtn a:active{background:#1e40af}
 .big{font-size:19px;font-weight:700;color:#0f172a;font-variant-numeric:tabular-nums}
 .big small{font-size:11px;font-weight:400;color:#64748b}
 .fco{margin-top:6px;padding-top:5px;border-top:1px solid #e5e7eb;font-size:11px;line-height:1.45;color:#374151}.fco b{color:#111827}.roadlen{font-size:12px;line-height:1.45;color:#0f172a;font-variant-numeric:tabular-nums}
@@ -888,20 +891,25 @@ function coordHTML(lat,lng){
   return '<div class="fco"><b>WGS84</b> '+lat.toFixed(6)+', '+lng.toFixed(6)+
          '<br><b>ETRS89 / UTM '+z+'N (H'+z+')</b> E '+uv[0].toFixed(2)+'  N '+uv[1].toFixed(2)+'</div>';
 }
+function streetViewHTML(lat,lng){
+  const url='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+
+            Number(lat).toFixed(6)+','+Number(lng).toFixed(6);
+  return '<div class="svbtn"><a href="'+url+'" target="_blank" rel="noopener noreferrer">🛰️ Ver en Street View</a></div>';
+}
 D.roads.forEach((r,i)=>{
  const casing=L.polyline(r[3],{color:'#ffffff',weight:roadWeight+4,opacity:.95,lineCap:'round',interactive:false});
  const line=L.polyline(r[3],{color:roadColor,weight:roadWeight,opacity:1,lineCap:'round',bubblingMouseEvents:false});
  const roadHTML=()=>'<h3>'+esc(r[0])+'</h3><div class="desc">'+esc(r[1])+'</div><div class="roadlen"><b>'+fmt(r[2]/1000)+' km</b> / <span>'+fmt(r[2])+' m</span></div>';
  const pkMiniHTML=pk=>'<div class="pkmini">'+esc(r[0])+'&nbsp;&nbsp;&nbsp;&nbsp;PK: '+miniPK(pk)+'</div>';
- line.bindPopup(roadHTML()+coordHTML(r[3][0][0],r[3][0][1]));
+ line.bindPopup(roadHTML()+coordHTML(r[3][0][0],r[3][0][1])+streetViewHTML(r[3][0][0],r[3][0][1]));
  line.on('click',e=>{
    select(i);
    if(refOn){
      lrsManualUntil=Date.now()+20000;
      updateLRS(e.latlng,0,false,false,true);
-     line.setPopupContent(pkMiniHTML($('lrsPk').textContent)+coordHTML(e.latlng.lat,e.latlng.lng));
+     line.setPopupContent(pkMiniHTML($('lrsPk').textContent)+coordHTML(e.latlng.lat,e.latlng.lng)+streetViewHTML(e.latlng.lat,e.latlng.lng));
    }else{
-     line.setPopupContent(roadHTML()+coordHTML(e.latlng.lat,e.latlng.lng));
+     line.setPopupContent(roadHTML()+coordHTML(e.latlng.lat,e.latlng.lng)+streetViewHTML(e.latlng.lat,e.latlng.lng));
    }
  });
  roadGroup.addLayer(casing).addLayer(line); RL.push(line); CASING.push(casing);
